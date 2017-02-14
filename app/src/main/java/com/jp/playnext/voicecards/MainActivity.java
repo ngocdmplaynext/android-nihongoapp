@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         vpCards.setAdapter(mPagerAdapter);
         vpCards.setOffscreenPageLimit(mPagerAdapter.getCount());
 
-
         findViewById(R.id.btn_record_voice).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

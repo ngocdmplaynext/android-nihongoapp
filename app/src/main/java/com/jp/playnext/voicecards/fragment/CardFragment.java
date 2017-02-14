@@ -1,15 +1,8 @@
 package com.jp.playnext.voicecards.fragment;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.speech.RecognizerIntent;
 import android.support.v4.app.Fragment;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.style.BackgroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +28,8 @@ public class CardFragment extends Fragment {
     Card card;
 
     TextView tvCard;
-    TextView tvSaidSentence;
+    TextView tvExpectedSentence;
+    TextView tvReceivedSentence;
     TextView tvPercentage;
 
     //DEBUG
@@ -79,8 +73,12 @@ public class CardFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_card, container, false);
 
         tvCard = (TextView) rootView.findViewById(R.id.tv_card);
-        tvSaidSentence = (TextView) rootView.findViewById(R.id.tv_said_sentence);
+        tvExpectedSentence = (TextView) rootView.findViewById(R.id.tv_expected_sentence);
+        tvReceivedSentence = (TextView) rootView.findViewById(R.id.tv_received_sentence);
         tvPercentage = (TextView) rootView.findViewById(R.id.tv_percentage);
+        tvExpectedSentence.setText("");
+        tvReceivedSentence.setText("");
+        tvPercentage.setText("");
 
         //Debug
         tvTextResult = (TextView) rootView.findViewById(R.id.tv_result_text);
@@ -147,8 +145,9 @@ public class CardFragment extends Fragment {
     public void displayResult(ArrayList<String> result, float[] confidence) {
 
 
-        tvSaidSentence.setText(card.difference(result.get(0)));
-        tvPercentage.setText(getString(R.string.percentage) + String.format("%.2f", confidence[0] * 100) + "%");
+        tvExpectedSentence.setText(card.difference(result.get(0)));
+        tvReceivedSentence.setText("Received:"+result.get(0));
+        tvPercentage.setText(String.format("%.2f", confidence[0] * 100) + "%");
 
         /*
         //==========================DEBUG===========================================================
