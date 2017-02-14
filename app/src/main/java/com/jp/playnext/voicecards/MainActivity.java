@@ -2,18 +2,19 @@ package com.jp.playnext.voicecards;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.Color;
 import android.speech.RecognizerIntent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.TextUtils;
-import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.jp.playnext.voicecards.fragment.CardFragment;
 import com.jp.playnext.voicecards.model.Card;
 
 import java.util.ArrayList;
@@ -25,36 +26,20 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int VR_Request = 100;
 
-    TextView tvCard;
-    TextView tvSaidSentence;
-    TextView tvPercentage;
-
-    ArrayList<Card> alWordsBank;
-
-
-    //DEBUG
-    TextView tvTextResult;
-    TextView tvDisplayText;
+    ViewPager vpCards;
+    CardSlidePagerAdapter mPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tvCard = (TextView) findViewById(R.id.tv_card);
-        tvSaidSentence = (TextView) findViewById(R.id.tv_said_sentence);
-        tvPercentage = (TextView) findViewById(R.id.tv_percentage);
+        vpCards = (ViewPager) findViewById(R.id.vp_cards);
 
-
-        String[] wordBankArray = getResources().getStringArray(R.array.Words);
-        alWordsBank = new ArrayList();
-        for (String s : wordBankArray)
-            alWordsBank.add(new Card(s));
-
-
-        if (alWordsBank.size() != 0) {
-            tvCard.setText(alWordsBank.get(0).getSentence());
-        }
+        mPagerAdapter = new CardSlidePagerAdapter(getSupportFragmentManager(),
+                getResources().getStringArray(R.array.Words));
+        vpCards.setAdapter(mPagerAdapter);
+        vpCards.setOffscreenPageLimit(mPagerAdapter.getCount());
 
 
         findViewById(R.id.btn_record_voice).setOnClickListener(new View.OnClickListener() {
@@ -64,9 +49,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Debug
-        tvTextResult = (TextView) findViewById(R.id.tv_result_text);
-        tvDisplayText = (TextView) findViewById(R.id.tv_result_analysis);
 
     }
 
@@ -133,44 +115,48 @@ public class MainActivity extends AppCompatActivity {
         float[] confidence = intent.getFloatArrayExtra(
                 RecognizerIntent.EXTRA_CONFIDENCE_SCORES);
 
+        mPagerAdapter.getCurrentFragment().displayResult(result, confidence);
 
-        tvSaidSentence.setText(alWordsBank.get(0).difference(result.get(0)));
-        tvPercentage.setText(getString(R.string.percentage) + String.format("%.2f", confidence[0] * 100) + "%");
+    }
 
+    /**
+     * A simple pager adapter for cardsFragments objects, in
+     * sequence.
+     */
+    private class CardSlidePagerAdapter extends FragmentStatePagerAdapter {
 
-        //==========================DEBUG===========================================================
+        ArrayList<Card> alWordsBank = new ArrayList<>();
 
-        String displayText = "";
+        private CardFragment mCurrentFragment;
 
-        for (int i = 0; i < result.size(); i++) {
-            Log.d("Text", result.get(i));
-            displayText += "Result " + i + ":" + result.get(i);
-            if (confidence.length > i)
-                displayText += " confidence:" + String.valueOf(confidence[i] * 100) + "\n";
+        public CardSlidePagerAdapter(FragmentManager fm, String[] wordBankArray) {
+            super(fm);
+            for (String s : wordBankArray)
+                alWordsBank.add(new Card(s));
         }
 
-        for (float textConfidence : confidence) {
-            Log.d("Confidence", String.valueOf(textConfidence * 100));
-            displayText += textConfidence + " !;! ";
-
+        @Override
+        public Fragment getItem(int position) {
+            return new CardFragment().newInstance(alWordsBank.get(position));
         }
 
-        tvDisplayText.setText(displayText);
-
-        String[] arr = result.get(0).split(" ");
-
-        tvTextResult.setText("");
-
-        for (String s : arr) {
-            SpannableString str = new SpannableString(s);
-            if (alWordsBank.contains(s))
-                str.setSpan(new BackgroundColorSpan(Color.RED), 0, str.length(), 0);
-
-            tvTextResult.setText(TextUtils.concat(tvTextResult.getText(), str) + " ");
+        @Override
+        public int getCount() {
+            return alWordsBank.size();
         }
 
-        //==========================================================================================
 
+        public CardFragment getCurrentFragment() {
+            return mCurrentFragment;
+        }
 
+        //...
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            if (getCurrentFragment() != object) {
+                mCurrentFragment = ((CardFragment) object);
+            }
+            super.setPrimaryItem(container, position, object);
+        }
     }
 }
