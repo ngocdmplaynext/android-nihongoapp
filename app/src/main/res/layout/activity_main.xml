@@ -13,14 +13,49 @@
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btn_record_voice"
+        android:layout_above="@+id/rl_footer"
         android:id="@+id/vp_cards"></android.support.v4.view.ViewPager>
-    <Button
-        android:id="@+id/btn_record_voice"
-        android:layout_width="wrap_content"
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="Button" />
+        android:id="@+id/rl_footer"
+        android:layout_alignParentBottom="true">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/btn_record_voice"
+            android:layout_alignParentLeft="true"
+            android:checkedButton="@+id/rb_japanese">
+
+            <RadioButton
+                android:text="Japanese"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rb_japanese"
+                android:layout_above="@+id/rb_english"
+                android:layout_weight="1"
+                android:onClick="onRadioButtonClicked" />
+
+            <RadioButton
+                android:text="English"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rb_english"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:layout_weight="1"
+                android:onClick="onRadioButtonClicked" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btn_record_voice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Button" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

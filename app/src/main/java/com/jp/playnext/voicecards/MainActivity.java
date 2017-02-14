@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.jp.playnext.voicecards.fragment.CardFragment;
@@ -28,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
     ViewPager vpCards;
     CardSlidePagerAdapter mPagerAdapter;
+
+
+    String myLanguage = Locale.JAPAN.toString();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.rb_japanese:
+                if (checked)
+                    myLanguage = Locale.JAPAN.toString();
+                    break;
+            case R.id.rb_english:
+                if (checked)
+                    myLanguage = Locale.US.toString();
+                break;
+        }
+    }
+
     public void onMic() {
         promptSpeechInput();
     }
@@ -59,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
     public void promptSpeechInput() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.ACTION_RECOGNIZE_SPEECH, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        String myLanguage = Locale.US.toString();
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, myLanguage);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, myLanguage);
         intent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, myLanguage);
