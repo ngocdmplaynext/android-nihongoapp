@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">VoiceCards</string>
+    <string name="percentage">Score: </string>
 </resources>
