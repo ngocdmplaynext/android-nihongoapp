@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="Words">
-        <item>Pink</item>
+        <item>red</item>
         <item>Yellow</item>
         <item>Green</item>
         <item>Purple</item>
