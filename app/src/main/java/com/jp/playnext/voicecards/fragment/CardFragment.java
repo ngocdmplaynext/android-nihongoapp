@@ -3,15 +3,22 @@ package com.jp.playnext.voicecards.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.jp.playnext.voicecards.R;
 import com.jp.playnext.voicecards.model.Card;
+import com.musicg.wave.Wave;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +38,9 @@ public class CardFragment extends Fragment {
     TextView tvExpectedSentence;
     TextView tvReceivedSentence;
     TextView tvPercentage;
+
+    LineChart lcLineChart;
+
 
     //DEBUG
     TextView tvTextResult;
@@ -72,6 +82,7 @@ public class CardFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_card, container, false);
 
+        lcLineChart = (LineChart) rootView.findViewById(R.id.lc_chart);
         tvCard = (TextView) rootView.findViewById(R.id.tv_card);
         tvExpectedSentence = (TextView) rootView.findViewById(R.id.tv_expected_sentence);
         tvReceivedSentence = (TextView) rootView.findViewById(R.id.tv_received_sentence);
@@ -149,6 +160,9 @@ public class CardFragment extends Fragment {
         tvReceivedSentence.setText("Received:"+result.get(0));
         tvPercentage.setText(String.format("%.2f", confidence[0] * 100) + "%");
 
+        //TOOD: SAVE AUDIO TO WAV AND PARSE IT
+        //audioWave(filePath);
+
         /*
         //==========================DEBUG===========================================================
 
@@ -181,6 +195,30 @@ public class CardFragment extends Fragment {
 
         //==========================================================================================
         */
+    }
+
+    public void audioWave(String filePath) {
+        Wave w1 = new Wave(filePath);
+
+        double[] amplitudes = w1.getNormalizedAmplitudes();
+        //float lenght = w1.length();
+
+        List<Entry> entries = new ArrayList<Entry>();
+
+        int bitSampleRate = w1.getWaveHeader().getSampleRate();
+
+        for (int i = 0; i < amplitudes.length; i += bitSampleRate) {
+            entries.add(new Entry((i == 0) ? 0 : (float)(i / bitSampleRate),
+                    (float) amplitudes[i]));
+        }
+
+        LineDataSet lineDataSet = new LineDataSet(entries, "Label"); // add entries to dataset
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+
+        LineData lineData = new LineData(lineDataSet);
+        lcLineChart.setData(lineData);
+        lcLineChart.invalidate(); // refresh
+
     }
 
 }

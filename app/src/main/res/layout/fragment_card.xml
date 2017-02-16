@@ -85,4 +85,10 @@
         android:layout_below="@+id/tv_result_text"
         android:text="Result analysis" />
 
+    <com.github.mikephil.charting.charts.LineChart
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/tv_result_text"
+        android:id="@+id/lc_chart"></com.github.mikephil.charting.charts.LineChart>
+
 </RelativeLayout>
