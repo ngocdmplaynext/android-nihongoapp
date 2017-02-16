@@ -31,6 +31,7 @@ import java.util.List;
 public class CardFragment extends Fragment {
 
     private static final String CARD_KEY = "CARD_KEY";
+    private static final String TAG = CardFragment.class.getSimpleName();
 
     Card card;
 
@@ -153,15 +154,14 @@ public class CardFragment extends Fragment {
      * @param result     Sentences
      * @param confidence The confidence array
      */
-    public void displayResult(ArrayList<String> result, float[] confidence) {
+    public void displayResult(ArrayList<String> result, float[] confidence, String filePath) {
 
 
         tvExpectedSentence.setText(card.difference(result.get(0)));
-        tvReceivedSentence.setText("Received:"+result.get(0));
+        tvReceivedSentence.setText("Received:" + result.get(0));
         tvPercentage.setText(String.format("%.2f", confidence[0] * 100) + "%");
 
-        //TOOD: SAVE AUDIO TO WAV AND PARSE IT
-        //audioWave(filePath);
+        audioWave(filePath);
 
         /*
         //==========================DEBUG===========================================================
@@ -198,6 +198,12 @@ public class CardFragment extends Fragment {
     }
 
     public void audioWave(String filePath) {
+        if (TextUtils.isEmpty(filePath)) {
+            Log.e(TAG, "File path is null or empty.");
+            return;
+        }
+
+
         Wave w1 = new Wave(filePath);
 
         double[] amplitudes = w1.getNormalizedAmplitudes();
@@ -208,7 +214,7 @@ public class CardFragment extends Fragment {
         int bitSampleRate = w1.getWaveHeader().getSampleRate();
 
         for (int i = 0; i < amplitudes.length; i += bitSampleRate) {
-            entries.add(new Entry((i == 0) ? 0 : (float)(i / bitSampleRate),
+            entries.add(new Entry((i == 0) ? 0 : (float) (i / bitSampleRate),
                     (float) amplitudes[i]));
         }
 

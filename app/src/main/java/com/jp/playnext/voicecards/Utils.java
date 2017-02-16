@@ -1,5 +1,9 @@
 package com.jp.playnext.voicecards;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,5 +33,24 @@ public class Utils {
         // Subtract the intersection from the union
         union.removeAll(intersection);
         return union;
+    }
+
+    public static boolean saveAudio(InputStream in, File file){
+
+        try {
+            OutputStream out = new FileOutputStream(file);
+            byte[] buf = new byte[1024];
+            int len;
+            while((len=in.read(buf))>0){
+                out.write(buf,0,len);
+            }
+            out.close();
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+
     }
 }

@@ -1,7 +1,10 @@
 package com.jp.playnext.voicecards;
 
 import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.speech.RecognizerIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +21,9 @@ import android.widget.Toast;
 import com.jp.playnext.voicecards.fragment.CardFragment;
 import com.jp.playnext.voicecards.model.Card;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -60,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
         boolean checked = ((RadioButton) view).isChecked();
 
         // Check which radio button was clicked
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.rb_japanese:
                 if (checked)
                     myLanguage = Locale.JAPAN.toString();
-                    break;
+                break;
             case R.id.rb_english:
                 if (checked)
                     myLanguage = Locale.US.toString();
@@ -77,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void promptSpeechInput() {
+
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.ACTION_RECOGNIZE_SPEECH, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, myLanguage);
@@ -84,6 +91,12 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, myLanguage);
         intent.putExtra(RecognizerIntent.EXTRA_CONFIDENCE_SCORES, true);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Say a word!");
+
+        // for getting audio file returned
+        //NOT WORKING
+        //intent.putExtra("android.speech.extra.GET_AUDIO_FORMAT", "audio/AMR");
+        intent.putExtra("android.speech.extra.GET_AUDIO", true);
+
 
         try {
             startActivityForResult(intent, VR_Request);
@@ -134,7 +147,29 @@ public class MainActivity extends AppCompatActivity {
         float[] confidence = intent.getFloatArrayExtra(
                 RecognizerIntent.EXTRA_CONFIDENCE_SCORES);
 
-        mPagerAdapter.getCurrentFragment().displayResult(result, confidence);
+
+        Uri audioUri = intent.getData();
+        ContentResolver contentResolver = getContentResolver();
+        String toastString = " Failed to save";
+        if (audioUri != null) {
+            try {
+                InputStream filestream = contentResolver.openInputStream(audioUri);
+
+                File sdcard = Environment.getExternalStorageDirectory();
+                File storagePath = new File(sdcard.getAbsolutePath() + "/Music");
+                File audioFile = new File(storagePath + "/" + "test" + ".wav");
+                if (Utils.saveAudio(filestream, audioFile))
+                    toastString = "Saved file to location:" + audioFile.getAbsolutePath();
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else
+            toastString += " URI is null";
+
+        Toast.makeText(this, toastString, Toast.LENGTH_SHORT).show();
+        mPagerAdapter.getCurrentFragment().displayResult(result, confidence, "");
+
 
     }
 
