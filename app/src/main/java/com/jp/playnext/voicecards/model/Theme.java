@@ -39,6 +39,10 @@ public class Theme implements Parcelable {
         alDeck.remove(deck);
     }
 
+    public Deck get(int position){
+        return alDeck.get(position);
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -66,4 +70,12 @@ public class Theme implements Parcelable {
             return new Theme[size];
         }
     };
+
+    public ArrayList<Deck> getDeck() {
+        return alDeck;
+    }
+
+    public String getsName() {
+        return sName;
+    }
 }

@@ -8,23 +8,26 @@ import android.widget.TextView;
 
 import com.jp.playnext.voicecards.R;
 import com.jp.playnext.voicecards.fragment.DeckFragment;
+import com.jp.playnext.voicecards.fragment.ThemeFragment;
 import com.jp.playnext.voicecards.model.Card;
 import com.jp.playnext.voicecards.model.Deck;
+import com.jp.playnext.voicecards.model.Theme;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Card} and makes a call to the
- * specified {@link DeckFragment.OnDeckFragmentInteraction}.
+ * specified {@link ThemeFragment.OnThemeFragmentInteraction}.
  */
-public class MyDeckRecyclerViewAdapter extends RecyclerView.Adapter<MyDeckRecyclerViewAdapter.ViewHolder> {
+public class ThemeRecyclerVA extends RecyclerView.Adapter<ThemeRecyclerVA.ViewHolder> {
 
-    private final Deck deck;
-    private final DeckFragment.OnDeckFragmentInteraction mListener;
+    private final Theme theme;
+    private final ThemeFragment.OnThemeFragmentInteraction mListener;
 
-    public MyDeckRecyclerViewAdapter(Deck deck, DeckFragment.OnDeckFragmentInteraction listener) {
-        this.deck = deck;
+    public ThemeRecyclerVA(Theme theme, ThemeFragment.OnThemeFragmentInteraction listener) {
+        this.theme = theme;
         mListener = listener;
     }
 
@@ -37,8 +40,8 @@ public class MyDeckRecyclerViewAdapter extends RecyclerView.Adapter<MyDeckRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mCard = deck.get(position);
-        holder.mSentenceView.setText(deck.get(position).getSentence());
+        holder.mDeck = theme.get(position);
+        holder.mSentenceView.setText(theme.get(position).getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +49,7 @@ public class MyDeckRecyclerViewAdapter extends RecyclerView.Adapter<MyDeckRecycl
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onCardClicked(holder.mCard);
+                    mListener.onDeskClicked(holder.mDeck);
                 }
             }
         });
@@ -54,14 +57,14 @@ public class MyDeckRecyclerViewAdapter extends RecyclerView.Adapter<MyDeckRecycl
 
     @Override
     public int getItemCount() {
-        return deck.getCards().size();
+        return theme.getDeck().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         @BindView(R.id.tv_sentence)
         public TextView mSentenceView;
-        public Card mCard;
+        public Deck mDeck;
 
         public ViewHolder(View view) {
             super(view);

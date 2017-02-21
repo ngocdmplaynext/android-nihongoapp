@@ -11,35 +11,35 @@ import android.view.ViewGroup;
 
 import com.jp.playnext.voicecards.R;
 import com.jp.playnext.voicecards.adapter.MyDeckRecyclerVA;
+import com.jp.playnext.voicecards.adapter.ThemeRecyclerVA;
 import com.jp.playnext.voicecards.model.Card;
 import com.jp.playnext.voicecards.model.Deck;
+import com.jp.playnext.voicecards.model.Theme;
 
 /**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnDeckFragmentInteraction}
- * interface.
+ * Created by danielmorais on 2/21/17.
  */
-public class DeckFragment extends Fragment {
 
-    private static final String ARG_DECK = "arg-deck";
+public class ThemeFragment extends Fragment {
 
-    private Deck deck;
-    private OnDeckFragmentInteraction mListener;
+    private static final String ARG_THEME = "arg_theme";
+
+    private Theme theme;
+    private ThemeFragment.OnThemeFragmentInteraction mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public DeckFragment() {
+    public ThemeFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static DeckFragment newInstance(Deck deck) {
+    public static DeckFragment newInstance(Theme theme) {
         DeckFragment fragment = new DeckFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_DECK, deck);
+        args.putParcelable(ARG_THEME, theme);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,7 +49,7 @@ public class DeckFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            deck = getArguments().getParcelable(ARG_DECK);
+            theme = getArguments().getParcelable(ARG_THEME);
         }
     }
 
@@ -70,7 +70,7 @@ public class DeckFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, deck.getCards().size() ));
             }
 */
-            recyclerView.setAdapter(new MyDeckRecyclerVA(deck, mListener));
+            recyclerView.setAdapter(new ThemeRecyclerVA(theme, mListener));
         }
         return view;
     }
@@ -79,8 +79,8 @@ public class DeckFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnDeckFragmentInteraction) {
-            mListener = (OnDeckFragmentInteraction) context;
+        if (context instanceof ThemeFragment.OnThemeFragmentInteraction) {
+            mListener = (ThemeFragment.OnThemeFragmentInteraction) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -103,8 +103,8 @@ public class DeckFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnDeckFragmentInteraction {
+    public interface OnThemeFragmentInteraction {
         // TODO: Update argument type and name
-        void onCardClicked(Card card);
+        void onDeskClicked(Deck deck);
     }
 }
