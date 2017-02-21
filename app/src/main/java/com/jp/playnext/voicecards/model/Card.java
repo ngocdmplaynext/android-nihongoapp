@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 
@@ -142,4 +143,14 @@ public class Card implements Parcelable {
             return new Card[size];
         }
     };
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Card))
+            return false;
+        Card otherCard = (Card) obj;
+
+        return TextUtils.equals(sentence, otherCard.getSentence());
+
+    }
 }

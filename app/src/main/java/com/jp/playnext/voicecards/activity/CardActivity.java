@@ -1,7 +1,8 @@
-package com.jp.playnext.voicecards;
+package com.jp.playnext.voicecards.activity;
 
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -18,8 +19,11 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.jp.playnext.voicecards.R;
+import com.jp.playnext.voicecards.Utils;
 import com.jp.playnext.voicecards.fragment.CardFragment;
 import com.jp.playnext.voicecards.model.Card;
+import com.jp.playnext.voicecards.model.Deck;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,36 +34,54 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
 
-    public final static String TAG = MainActivity.class.getSimpleName();
+public class CardActivity extends AppCompatActivity {
+
+    public final static String TAG = CardActivity.class.getSimpleName();
 
     private static final int VR_Request = 100;
+    private static final String DECK_KEY = "deck_key";
+    private static final String CARD_KEY = "card_key";
 
-    @BindView(R.id.vp_cards)ViewPager vpCards;
+    @BindView(R.id.vp_cards) ViewPager vpCards;
     CardSlidePagerAdapter mPagerAdapter;
 
 
     String myLanguage = Locale.JAPAN.toString();
 
+    public static void newInstance(Context context, Deck deck, Card selectedCard) {
+        Intent intent = new Intent(context, CardActivity.class);
+        intent.putExtra(DECK_KEY, deck);
+        intent.putExtra(CARD_KEY, selectedCard);
+        context.startActivity(intent);
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_card);
         ButterKnife.bind(this);
 
+        if (getIntent() != null) {
+            Deck deck = getIntent().getParcelableExtra(DECK_KEY);
+            Card card = getIntent().getParcelableExtra(CARD_KEY);
 
-        mPagerAdapter = new CardSlidePagerAdapter(getSupportFragmentManager(),
-                getResources().getStringArray(R.array.Words));
-        vpCards.setAdapter(mPagerAdapter);
-        vpCards.setOffscreenPageLimit(mPagerAdapter.getCount());
+            mPagerAdapter = new CardSlidePagerAdapter(getSupportFragmentManager(), deck);
+            vpCards.setAdapter(mPagerAdapter);
+            vpCards.setOffscreenPageLimit(mPagerAdapter.getCount());
+            vpCards.setCurrentItem(mPagerAdapter.getItemPosition(card));
 
-        findViewById(R.id.btn_record_voice).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onMic();
-            }
-        });
+            findViewById(R.id.btn_record_voice).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onMic();
+                }
+            });
+
+        } else {
+            Toast.makeText(this, "Deck is Empty", Toast.LENGTH_SHORT);
+        }
 
 
     }
@@ -104,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             startActivityForResult(intent, VR_Request);
         } catch (ActivityNotFoundException a) {
-            Toast.makeText(MainActivity.this, "Your device doesn't support speech recognition,", Toast.LENGTH_LONG).show();
+            Toast.makeText(CardActivity.this, "Your device doesn't support speech recognition,", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -182,24 +204,32 @@ public class MainActivity extends AppCompatActivity {
      */
     private class CardSlidePagerAdapter extends FragmentStatePagerAdapter {
 
-        ArrayList<Card> alWordsBank = new ArrayList<>();
-
+        Deck deck;
         private CardFragment mCurrentFragment;
 
-        public CardSlidePagerAdapter(FragmentManager fm, String[] wordBankArray) {
+        public CardSlidePagerAdapter(FragmentManager fm, Deck deck) {
             super(fm);
-            for (String s : wordBankArray)
-                alWordsBank.add(new Card(s));
+            this.deck = deck;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return new CardFragment().newInstance(alWordsBank.get(position));
+            return new CardFragment().newInstance(deck.getCards().get(position));
         }
 
         @Override
         public int getCount() {
-            return alWordsBank.size();
+            return deck.getCards().size();
+        }
+
+        public int getItemPosition(Card card) {
+            int index = deck.getCards().indexOf(card);
+            if (index >= 0)
+                return index;
+
+            Log.e(TAG, "CARD DOESN'T EXIST");
+            return 0;
+
         }
 
 

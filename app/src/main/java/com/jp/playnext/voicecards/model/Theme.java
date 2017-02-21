@@ -1,12 +1,15 @@
 package com.jp.playnext.voicecards.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 /**
  * Created by danielmorais on 2/20/17.
  */
 
-public class Theme  {
+public class Theme implements Parcelable {
 
     private String sName;
 
@@ -35,4 +38,32 @@ public class Theme  {
     public void removeDeck(Deck deck){
         alDeck.remove(deck);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.sName);
+        dest.writeTypedList(this.alDeck);
+    }
+
+    protected Theme(Parcel in) {
+        this.sName = in.readString();
+        this.alDeck = in.createTypedArrayList(Deck.CREATOR);
+    }
+
+    public static final Parcelable.Creator<Theme> CREATOR = new Parcelable.Creator<Theme>() {
+        @Override
+        public Theme createFromParcel(Parcel source) {
+            return new Theme(source);
+        }
+
+        @Override
+        public Theme[] newArray(int size) {
+            return new Theme[size];
+        }
+    };
 }
