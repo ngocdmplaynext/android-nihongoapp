@@ -40,14 +40,14 @@ public class CardFragment extends Fragment {
 
     @BindView(R.id.tv_card) TextView tvCard;
     @BindView(R.id.tv_expected_sentence) TextView tvExpectedSentence;
-    @BindView(R.id.tv_received_sentence)TextView tvReceivedSentence;
-    @BindView(R.id.tv_percentage)TextView tvPercentage;
+    @BindView(R.id.tv_received_sentence) TextView tvReceivedSentence;
+    @BindView(R.id.tv_percentage) TextView tvPercentage;
 
-    @BindView(R.id.lc_chart)LineChart lcLineChart;
+    @BindView(R.id.lc_chart) LineChart lcLineChart;
 
     //DEBUG
-    @BindView(R.id.tv_result_text)TextView tvTextResult;
-    @BindView(R.id.tv_result_analysis)TextView tvResultAnalysis;
+    @BindView(R.id.tv_result_text) TextView tvTextResult;
+    @BindView(R.id.tv_result_analysis) TextView tvResultAnalysis;
 
     //private OnFragmentInteractionListener mListener;
 
