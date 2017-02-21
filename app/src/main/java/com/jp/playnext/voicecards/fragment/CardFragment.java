@@ -20,6 +20,9 @@ import com.musicg.wave.Wave;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -35,17 +38,16 @@ public class CardFragment extends Fragment {
 
     Card card;
 
-    TextView tvCard;
-    TextView tvExpectedSentence;
-    TextView tvReceivedSentence;
-    TextView tvPercentage;
+    @BindView(R.id.tv_card) TextView tvCard;
+    @BindView(R.id.tv_expected_sentence) TextView tvExpectedSentence;
+    @BindView(R.id.tv_received_sentence)TextView tvReceivedSentence;
+    @BindView(R.id.tv_percentage)TextView tvPercentage;
 
-    LineChart lcLineChart;
-
+    @BindView(R.id.lc_chart)LineChart lcLineChart;
 
     //DEBUG
-    TextView tvTextResult;
-    TextView tvDisplayText;
+    @BindView(R.id.tv_result_text)TextView tvTextResult;
+    @BindView(R.id.tv_result_analysis)TextView tvResultAnalysis;
 
     //private OnFragmentInteractionListener mListener;
 
@@ -83,20 +85,14 @@ public class CardFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_card, container, false);
 
-        lcLineChart = (LineChart) rootView.findViewById(R.id.lc_chart);
-        tvCard = (TextView) rootView.findViewById(R.id.tv_card);
-        tvExpectedSentence = (TextView) rootView.findViewById(R.id.tv_expected_sentence);
-        tvReceivedSentence = (TextView) rootView.findViewById(R.id.tv_received_sentence);
-        tvPercentage = (TextView) rootView.findViewById(R.id.tv_percentage);
+        ButterKnife.bind(this, rootView);
         tvExpectedSentence.setText("");
         tvReceivedSentence.setText("");
         tvPercentage.setText("");
 
         //Debug
-        tvTextResult = (TextView) rootView.findViewById(R.id.tv_result_text);
-        tvDisplayText = (TextView) rootView.findViewById(R.id.tv_result_analysis);
         tvTextResult.setText("");
-        tvDisplayText.setText("");
+        tvResultAnalysis.setText("");
 
         if (card != null)
             tvCard.setText(card.getSentence());
@@ -181,7 +177,7 @@ public class CardFragment extends Fragment {
 
         }
 
-        tvDisplayText.setText(displayText);
+        tvResultAnalysis.setText(displayText);
 
         String[] arr = result.get(0).split(" ");
 

@@ -27,13 +27,16 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
     public final static String TAG = MainActivity.class.getSimpleName();
 
     private static final int VR_Request = 100;
 
-    ViewPager vpCards;
+    @BindView(R.id.vp_cards)ViewPager vpCards;
     CardSlidePagerAdapter mPagerAdapter;
 
 
@@ -43,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        vpCards = (ViewPager) findViewById(R.id.vp_cards);
 
         mPagerAdapter = new CardSlidePagerAdapter(getSupportFragmentManager(),
                 getResources().getStringArray(R.array.Words));
