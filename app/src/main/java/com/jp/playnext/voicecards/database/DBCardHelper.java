@@ -135,8 +135,8 @@ public class DBCardHelper {
         res.moveToFirst();
 
         while (res.isAfterLast() == false) {
-            int id = res.getInt(res.getInt(res.getColumnIndex(CARD_COLUMN_SENTENCE)));
-            String sentence = res.getString(res.getColumnIndex(CARD_COLUMN_ID));
+            int id = res.getInt(res.getColumnIndex(CARD_COLUMN_ID));
+            String sentence = res.getString(res.getColumnIndex(CARD_COLUMN_SENTENCE));
             String title = res.getString(res.getColumnIndex(CARD_COLUMN_TITLE));
             String parentDeck = res.getString(res.getColumnIndex(CARD_COLUMN_PARENT_DECK));
 

@@ -1,7 +1,10 @@
 package com.jp.playnext.voicecards.model;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.jp.playnext.voicecards.database.DBHelper;
 
 import java.util.ArrayList;
 
@@ -39,17 +42,38 @@ public class Deck implements Parcelable {
         this.alCards = cards;
     }
 
+    //=================== ARRAY LIST=================================
+
+
     public void addCard(Card card) {
         getCards().add(card);
     }
+
 
     public void removeCard(Card card) {
         getCards().remove(card);
     }
 
+
     public Card get(int position) {
         return alCards.get(position);
     }
+
+    //=======================DB====================================
+
+    public void reloadCards(Context context) {
+        alCards = new ArrayList<>();
+        loadCards(context);
+    }
+
+    public void loadCards(Context context) {
+        if (alCards.size() == 0) {
+            alCards = DBHelper.getInstance(context).dbCardHelper.getDeckCards(sName);
+        }
+    }
+
+
+    //===================PARCEABLE=================================
 
     @Override
     public int describeContents() {
@@ -78,6 +102,9 @@ public class Deck implements Parcelable {
             return new Deck[size];
         }
     };
+
+    //===================GET/SETTERS=================================
+
 
     public ArrayList<Card> getCards() {
         return alCards;

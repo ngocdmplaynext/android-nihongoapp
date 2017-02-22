@@ -26,16 +26,16 @@ public class DummyInsertData {
         theme.addDeck(new Deck("Japanese", context.getResources().getStringArray(R.array.deck_japanese)));
         alThemes.add(theme);
 
-        theme = new Theme("Animal");
+        Theme theme2 = new Theme("Animal");
         theme.addDeck(new Deck("Wild animals", context.getResources().getStringArray(R.array.wild_animals)));
         theme.addDeck(new Deck("Domestic animals", context.getResources().getStringArray(R.array.domestic_animals)));
         theme.addDeck(new Deck("Sea animals", context.getResources().getStringArray(R.array.sea_animals)));
-        alThemes.add(theme);
+        alThemes.add(theme2);
 
         for(Theme t: alThemes){
             //DBHelper.getInstance(context).dbDeckHelper.insertTheme(t);
 
-            for(Deck d: theme.getDeck()){
+            for(Deck d: t.getDeck()){
                 //DBHelper.getInstance(context).dbDeckHelper.insertDeck(d);
 
                 for(Card c: d.getCards()){

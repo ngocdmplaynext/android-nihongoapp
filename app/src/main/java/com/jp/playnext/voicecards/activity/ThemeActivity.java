@@ -59,6 +59,7 @@ public class ThemeActivity extends AppCompatActivity
     @Override
     public void onDeckClicked(Deck deck) {
         //TODO Add Card lists to theme here
+        deck.loadCards(this);
         DeckActivity.newInstance(this, deck);
     }
 }

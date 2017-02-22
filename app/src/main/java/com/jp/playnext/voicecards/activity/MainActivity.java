@@ -67,14 +67,14 @@ public class MainActivity extends AppCompatActivity
     private void initData(){
         alThemes = new ArrayList<>();
         Theme theme = new Theme("Language");
-        theme.addDeck(new Deck("English",  getResources().getStringArray(R.array.deck_english)));
-        theme.addDeck(new Deck("Japanese",  getResources().getStringArray(R.array.deck_japanese)));
+        theme.addDeck(new Deck("English"));
+        theme.addDeck(new Deck("Japanese"));
         alThemes.add(theme);
 
         theme = new Theme("Animal");
-        theme.addDeck(new Deck("Wild animals",  getResources().getStringArray(R.array.wild_animals)));
-        theme.addDeck(new Deck("Domestic animals",  getResources().getStringArray(R.array.domestic_animals)));
-        theme.addDeck(new Deck("Sea animals",  getResources().getStringArray(R.array.sea_animals)));
+        theme.addDeck(new Deck("Wild animals"));
+        theme.addDeck(new Deck("Domestic animals"));
+        theme.addDeck(new Deck("Sea animals"));
         alThemes.add(theme);
 
 
