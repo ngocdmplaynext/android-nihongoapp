@@ -33,7 +33,7 @@ public class ThemeRecyclerVA extends RecyclerView.Adapter<ThemeRecyclerVA.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_deck_card_item, parent, false);
+                .inflate(R.layout.item_fragment_deck_card, parent, false);
         return new ViewHolder(view);
     }
 

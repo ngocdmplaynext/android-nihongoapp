@@ -36,7 +36,7 @@ public class MainThemeListRecyclerVA extends RecyclerView.Adapter<MainThemeListR
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_main_theme_item, parent, false);
+                .inflate(R.layout.item_fragment_main_theme, parent, false);
         return new ViewHolder(view);
     }
 
