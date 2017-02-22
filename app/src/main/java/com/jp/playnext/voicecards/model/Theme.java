@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class Theme implements Parcelable {
 
+    private int id;
     private String sName;
 
     private ArrayList<Deck> alDeck;
@@ -100,5 +101,13 @@ public class Theme implements Parcelable {
 
     public String getName() {
         return sName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

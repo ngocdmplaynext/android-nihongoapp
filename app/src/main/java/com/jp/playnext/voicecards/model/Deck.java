@@ -152,6 +152,6 @@ public class Deck implements Parcelable {
 
     @Override
     public String toString() {
-        return "ID:"+id+". Name:"+sName+". Parent Theme:"+sThemeName;
+        return "Deck ID:"+id+". Name:"+sName+". Parent Theme:"+sThemeName;
     }
 }

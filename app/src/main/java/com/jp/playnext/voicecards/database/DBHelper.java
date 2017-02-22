@@ -30,12 +30,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public  DBCardHelper dbCardHelper;
     public  DBDeckHelper dbDeckHelper;
+    public  DBThemeHelper dbThemeHelper;
 
 
     private DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         dbCardHelper = new DBCardHelper(context);
         dbDeckHelper = new DBDeckHelper(context);
+        dbThemeHelper = new DBThemeHelper(context);
     }
 
 
@@ -43,6 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //db.execSQL(SQL_CREATE_ENTRIES);
         db.execSQL(dbCardHelper.createTable());
         db.execSQL(dbDeckHelper.createTable());
+        db.execSQL(dbThemeHelper.createTable());
     }
 
 
@@ -54,6 +57,7 @@ public class DBHelper extends SQLiteOpenHelper {
        // db.execSQL(SQL_DELETE_ENTRIES);
         db.execSQL(dbCardHelper.upgradeTable());
         db.execSQL(dbDeckHelper.upgradeTable());
+        db.execSQL(dbThemeHelper.upgradeTable());
         onCreate(db);
 
     }

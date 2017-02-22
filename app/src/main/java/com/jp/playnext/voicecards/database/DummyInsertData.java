@@ -38,7 +38,7 @@ public class DummyInsertData {
         alThemes.add(theme);
 
         for (Theme t : alThemes) {
-            //DBHelper.getInstance(context).dbDeckHelper.insertTheme(t);
+            DBHelper.getInstance(context).dbThemeHelper.insertTheme(t);
 
             for (Deck d : t.getDeck()) {
                 DBHelper.getInstance(context).dbDeckHelper.insertDeck(d);

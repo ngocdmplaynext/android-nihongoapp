@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.jp.playnext.voicecards.R;
+import com.jp.playnext.voicecards.database.DBHelper;
 import com.jp.playnext.voicecards.database.DummyInsertData;
 import com.jp.playnext.voicecards.fragment.MainListFragment;
 import com.jp.playnext.voicecards.model.Deck;
@@ -65,14 +66,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initData() {
-        alThemes = new ArrayList<>();
-        Theme theme = new Theme("Language");
-        alThemes.add(theme);
-
-        theme = new Theme("Animal");
-        alThemes.add(theme);
-
-
+        alThemes = DBHelper.getInstance(this).dbThemeHelper.getAllTheme();
     }
 
     @Override
