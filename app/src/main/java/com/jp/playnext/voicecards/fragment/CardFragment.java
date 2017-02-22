@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CardFragment.OnFragmentInteractionListener} interface
+ * {@link } interface
  * to handle interaction events.
  * Use the {@link CardFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -42,6 +42,7 @@ public class CardFragment extends Fragment {
     @BindView(R.id.tv_expected_sentence) TextView tvExpectedSentence;
     @BindView(R.id.tv_received_sentence) TextView tvReceivedSentence;
     @BindView(R.id.tv_percentage) TextView tvPercentage;
+    @BindView(R.id.tv_best_percentage) TextView tvBestPercentage;
 
     @BindView(R.id.lc_chart) LineChart lcLineChart;
 
@@ -89,13 +90,16 @@ public class CardFragment extends Fragment {
         tvExpectedSentence.setText("");
         tvReceivedSentence.setText("");
         tvPercentage.setText("");
+        tvBestPercentage.setText("");
 
         //Debug
         tvTextResult.setText("");
         tvResultAnalysis.setText("");
 
-        if (card != null)
+        if (card != null) {
             tvCard.setText(card.getSentence());
+            tvBestPercentage.setText(card.getBestScoreString());
+        }
 
         return rootView;
     }
@@ -156,6 +160,8 @@ public class CardFragment extends Fragment {
         tvExpectedSentence.setText(card.difference(result.get(0)));
         tvReceivedSentence.setText("Received:" + result.get(0));
         tvPercentage.setText(String.format("%.2f", confidence[0] * 100) + "%");
+        card.setBestScore(this.getContext(), confidence[0] * 100);
+        tvBestPercentage.setText(card.getBestScoreString());
 
         audioWave(filePath);
 

@@ -57,11 +57,33 @@
         android:textAlignment="textStart"
         android:layout_centerHorizontal="true" />
 
+    <TextView
+        android:id="@+id/tv_best_percentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_below="@+id/tv_percentage"
+        android:text="%"
+        android:textSize="30sp"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_below="@+id/tv_received_sentence"
+        android:text="%"
+        android:textSize="30sp"
+        android:layout_centerHorizontal="true"/>
+
     <View
         android:id="@+id/separator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/tv_percentage"
+        android:layout_below="@+id/tv_best_percentage"
         android:layout_marginTop="2dp"
         android:background="@android:color/darker_gray" />
 

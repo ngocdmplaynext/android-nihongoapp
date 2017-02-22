@@ -1,5 +1,6 @@
 package com.jp.playnext.voicecards.model;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,6 +10,9 @@ import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 
+
+import com.jp.playnext.voicecards.database.DBHelper;
+import com.jp.playnext.voicecards.database.DBThemeHelper;
 
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 
@@ -27,6 +31,7 @@ public class Card implements Parcelable {
     private String sentence;
     private String title;
     private String parentDeck;
+    private float bestScore;
 
 
     public Card() {
@@ -35,10 +40,10 @@ public class Card implements Parcelable {
 
 
     public Card(String sentence, String parentDeck) {
-        this(sentence, sentence, -1, parentDeck);
+        this(sentence, sentence, parentDeck, -1, 0.0f);
     }
 
-    public Card(String sentence, String title, int id, String parentDeck) {
+    public Card(String sentence, String title, String parentDeck, int id, float bestScore) {
         this.sentence = sentence;
         this.title = title;
         this.id = id;
@@ -201,4 +206,24 @@ public class Card implements Parcelable {
     public void setParentDeck(String parentDeck) {
         this.parentDeck = parentDeck;
     }
+
+    public float getBestScore() {
+        return bestScore;
+    }
+
+    public String getBestScoreString() {
+        return String.format("%.2f", bestScore) + "%";
+    }
+
+
+    public void setBestScore(Context context, float bestScore) {
+        if (bestScore > this.bestScore) {
+            this.bestScore = bestScore;
+            if(id < -1)
+                DBHelper.getInstance(context).dbCardHelper.insertCard(this);
+            else
+                DBHelper.getInstance(context).dbCardHelper.updateCard(this);
+        }
+    }
+
 }

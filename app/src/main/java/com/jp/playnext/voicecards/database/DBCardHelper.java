@@ -5,13 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.jp.playnext.voicecards.model.Card;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -28,6 +25,7 @@ public class DBCardHelper {
     public static final String CARD_COLUMN_SENTENCE = "sentence";
     public static final String CARD_COLUMN_TITLE = "title";
     public static final String CARD_COLUMN_PARENT_DECK = "parent_deck";
+    public static final String CARD_COLUMN_BEST_SCORE = "best_score";
 
 
     private HashMap hp;
@@ -43,7 +41,8 @@ public class DBCardHelper {
                 + CARD_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + CARD_COLUMN_SENTENCE + " text,"
                 + CARD_COLUMN_TITLE + " text,"
-                + CARD_COLUMN_PARENT_DECK + " text"
+                + CARD_COLUMN_PARENT_DECK + " text,"
+                + CARD_COLUMN_BEST_SCORE + " float"
                 + ")";
         /*
          "create table contacts " +
@@ -68,6 +67,7 @@ public class DBCardHelper {
         contentValues.put(CARD_COLUMN_TITLE, card.getTitle());
         contentValues.put(CARD_COLUMN_SENTENCE, card.getSentence());
         contentValues.put(CARD_COLUMN_PARENT_DECK, card.getParentDeck());
+        contentValues.put(CARD_COLUMN_BEST_SCORE, card.getBestScore());
         db.insert(CARD_TABLE_NAME, null, contentValues);
         return true;
     }
@@ -95,6 +95,7 @@ public class DBCardHelper {
         contentValues.put(CARD_COLUMN_TITLE, card.getTitle());
         contentValues.put(CARD_COLUMN_SENTENCE, card.getSentence());
         contentValues.put(CARD_COLUMN_PARENT_DECK, card.getParentDeck());
+        contentValues.put(CARD_COLUMN_BEST_SCORE, card.getBestScore());
         db.update(CARD_TABLE_NAME, contentValues, "id = ? ", new String[]{String.valueOf(card.getId())});
         return true;
     }
@@ -138,8 +139,8 @@ public class DBCardHelper {
             String sentence = cursor.getString(cursor.getColumnIndex(CARD_COLUMN_SENTENCE));
             String title = cursor.getString(cursor.getColumnIndex(CARD_COLUMN_TITLE));
             String parentDeck = cursor.getString(cursor.getColumnIndex(CARD_COLUMN_PARENT_DECK));
-
-            array_list.add(new Card(sentence, title, id, parentDeck));
+            float bestScore = cursor.getFloat(cursor.getColumnIndex(CARD_COLUMN_BEST_SCORE));
+            array_list.add(new Card(sentence, title, parentDeck, id, bestScore));
             cursor.moveToNext();
         }
 
