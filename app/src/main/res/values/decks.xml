@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="Words">
+    <string-array name="deck_japanese">
         <item>日本語</item>
         <item>こんばんは</item>
         <item>おはようございます</item>
+        <item>日本</item>
+    </string-array>
+    <string-array name="deck_english">
         <item>red</item>
         <item>Yellow</item>
         <item>Green</item>
-        <item>日本</item>
         <item>White</item>
         <item>Black</item>
         <item>Blue</item>

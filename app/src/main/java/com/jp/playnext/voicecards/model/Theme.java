@@ -75,7 +75,7 @@ public class Theme implements Parcelable {
         return alDeck;
     }
 
-    public String getsName() {
+    public String getName() {
         return sName;
     }
 }

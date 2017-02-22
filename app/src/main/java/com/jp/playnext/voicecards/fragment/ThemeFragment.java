@@ -36,8 +36,8 @@ public class ThemeFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static DeckFragment newInstance(Theme theme) {
-        DeckFragment fragment = new DeckFragment();
+    public static ThemeFragment newInstance(Theme theme) {
+        ThemeFragment fragment = new ThemeFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_THEME, theme);
         fragment.setArguments(args);
@@ -105,6 +105,6 @@ public class ThemeFragment extends Fragment {
      */
     public interface OnThemeFragmentInteraction {
         // TODO: Update argument type and name
-        void onDeskClicked(Deck deck);
+        void onDeckClicked(Deck deck);
     }
 }

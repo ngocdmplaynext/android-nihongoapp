@@ -81,6 +81,7 @@ public class CardActivity extends AppCompatActivity {
 
         } else {
             Toast.makeText(this, "Deck is Empty", Toast.LENGTH_SHORT);
+            this.finish();
         }
 
 

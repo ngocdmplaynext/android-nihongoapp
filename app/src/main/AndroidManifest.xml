@@ -11,24 +11,24 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".activity.DeckActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".activity.CardActivity" />
+        android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".activity.ThemeActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/title_activity_theme"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity android:name=".activity.ThemeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.DeckActivity">
+        </activity>
+        <activity android:name=".activity.CardActivity" />
+
     </application>
 
 </manifest>

@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jp.playnext.voicecards.R;
-import com.jp.playnext.voicecards.fragment.DeckFragment;
 import com.jp.playnext.voicecards.fragment.ThemeFragment;
 import com.jp.playnext.voicecards.model.Card;
 import com.jp.playnext.voicecards.model.Deck;
@@ -49,7 +48,7 @@ public class ThemeRecyclerVA extends RecyclerView.Adapter<ThemeRecyclerVA.ViewHo
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onDeskClicked(holder.mDeck);
+                    mListener.onDeckClicked(holder.mDeck);
                 }
             }
         });
