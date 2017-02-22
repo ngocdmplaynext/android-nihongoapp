@@ -30,7 +30,7 @@ public class Deck implements Parcelable {
         this.sName = name;
         alCards = new ArrayList<>();
         for (String s : words)
-            alCards.add(new Card((s)));
+            alCards.add(new Card((s), name));
     }
 
     public Deck(String name, ArrayList<Card> cards) {
@@ -47,8 +47,8 @@ public class Deck implements Parcelable {
         getCards().remove(card);
     }
 
-    public Card get(int position){
-        return  alCards.get(position);
+    public Card get(int position) {
+        return alCards.get(position);
     }
 
     @Override

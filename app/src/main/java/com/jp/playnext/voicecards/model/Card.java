@@ -23,16 +23,26 @@ import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.*;
 public class Card implements Parcelable {
 
     private static final String TAG = Card.class.getSimpleName();
+    private int id;
     private String sentence;
+    private String title;
+    private String parentDeck;
 
 
-    public String getSentence() {
-        return sentence;
+    public Card() {
+
     }
 
 
-    public Card(String sentence) {
+    public Card(String sentence, String parentDeck) {
+        this(sentence, sentence, -1, parentDeck);
+    }
+
+    public Card(String sentence, String title, int id, String parentDeck) {
         this.sentence = sentence;
+        this.title = title;
+        this.id = id;
+        this.parentDeck = parentDeck;
     }
 
 
@@ -144,6 +154,7 @@ public class Card implements Parcelable {
         }
     };
 
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Card))
@@ -152,5 +163,42 @@ public class Card implements Parcelable {
 
         return TextUtils.equals(sentence, otherCard.getSentence());
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getSentence() {
+        return sentence;
+    }
+
+    public void setSentence(String sentence) {
+        this.sentence = sentence;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Override
+    public String toString() {
+        return "Card ID: " + id + ". Title:" + title + ". Sentence:" + sentence + ". Parent Deck:" + parentDeck;
+    }
+
+    public String getParentDeck() {
+        return parentDeck;
+    }
+
+    public void setParentDeck(String parentDeck) {
+        this.parentDeck = parentDeck;
     }
 }
