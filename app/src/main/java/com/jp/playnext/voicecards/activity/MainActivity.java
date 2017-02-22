@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        MainListFragment.OnMainListFragmentInteraction{
+        MainListFragment.OnMainListFragmentInteraction {
 
     ArrayList<Theme> alThemes;
 
@@ -64,17 +64,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void initData(){
+    private void initData() {
         alThemes = new ArrayList<>();
         Theme theme = new Theme("Language");
-        theme.addDeck(new Deck("English"));
-        theme.addDeck(new Deck("Japanese"));
         alThemes.add(theme);
 
         theme = new Theme("Animal");
-        theme.addDeck(new Deck("Wild animals"));
-        theme.addDeck(new Deck("Domestic animals"));
-        theme.addDeck(new Deck("Sea animals"));
         alThemes.add(theme);
 
 
@@ -140,6 +135,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onThemeClicked(Theme theme) {
         //TODO Add deck lists to theme here
-        ThemeActivity.newInstance(this,theme);
+        theme.loadCards(this);
+        ThemeActivity.newInstance(this, theme);
     }
 }

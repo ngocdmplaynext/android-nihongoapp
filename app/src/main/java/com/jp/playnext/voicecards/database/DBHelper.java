@@ -29,17 +29,20 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "VoiceCards.db";
 
     public  DBCardHelper dbCardHelper;
+    public  DBDeckHelper dbDeckHelper;
 
 
     private DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         dbCardHelper = new DBCardHelper(context);
+        dbDeckHelper = new DBDeckHelper(context);
     }
 
 
     public void onCreate(SQLiteDatabase db) {
         //db.execSQL(SQL_CREATE_ENTRIES);
         db.execSQL(dbCardHelper.createTable());
+        db.execSQL(dbDeckHelper.createTable());
     }
 
 
@@ -50,6 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
         // to simply to discard the data and start over
        // db.execSQL(SQL_DELETE_ENTRIES);
         db.execSQL(dbCardHelper.upgradeTable());
+        db.execSQL(dbDeckHelper.upgradeTable());
         onCreate(db);
 
     }

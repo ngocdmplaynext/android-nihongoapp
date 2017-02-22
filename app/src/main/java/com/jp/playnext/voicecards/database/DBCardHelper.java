@@ -23,7 +23,6 @@ public class DBCardHelper {
 
     private Context context;
 
-    public static final String DATABASE_NAME = "MyDBName.db";
     public static final String CARD_TABLE_NAME = "cards";
     public static final String CARD_COLUMN_ID = "id";
     public static final String CARD_COLUMN_SENTENCE = "sentence";
@@ -75,8 +74,8 @@ public class DBCardHelper {
 
     public Cursor getData(int id) {
         SQLiteDatabase db = DBHelper.getInstance(context).getReadableDatabase();
-        Cursor res = db.rawQuery("select * from " + CARD_TABLE_NAME + " where id=" + id + "", null);
-        return res;
+        Cursor cursor = db.rawQuery("select * from " + CARD_TABLE_NAME + " where id=" + id + "", null);
+        return cursor;
     }
 
 
@@ -113,8 +112,8 @@ public class DBCardHelper {
 
         //hp = new HashMap();
         SQLiteDatabase db = DBHelper.getInstance(context).getReadableDatabase();
-        Cursor res = db.rawQuery("select * from " + CARD_TABLE_NAME, null);
-        return parseCursor(res);
+        Cursor cursor = db.rawQuery("select * from " + CARD_TABLE_NAME, null);
+        return parseCursor(cursor);
     }
 
     public ArrayList<Card> getDeckCards(String deckName) {
@@ -122,26 +121,26 @@ public class DBCardHelper {
         SQLiteDatabase db = DBHelper.getInstance(context).getReadableDatabase();
 
         //final String whereClause = CARD_COLUMN_ID + " in (" + inClause + ")";
-        //Cursor res  = db.query(true,CARD_TABLE_NAME, null, whereClause, null, null, null, null,null);
-        Cursor res = db.rawQuery("select * from " + CARD_TABLE_NAME
-                + " where "+CARD_COLUMN_PARENT_DECK+"=? ", new String[]{deckName});
+        //Cursor cursor  = db.query(true,CARD_TABLE_NAME, null, whereClause, null, null, null, null,null);
+        Cursor cursor = db.rawQuery("select * from " + CARD_TABLE_NAME
+                + " where " + CARD_COLUMN_PARENT_DECK + "=? ", new String[]{deckName});
 
-        return parseCursor(res);
+        return parseCursor(cursor);
     }
 
-    private ArrayList<Card> parseCursor(Cursor res) {
+    private ArrayList<Card> parseCursor(Cursor cursor) {
         ArrayList<Card> array_list = new ArrayList<Card>();
 
-        res.moveToFirst();
+        cursor.moveToFirst();
 
-        while (res.isAfterLast() == false) {
-            int id = res.getInt(res.getColumnIndex(CARD_COLUMN_ID));
-            String sentence = res.getString(res.getColumnIndex(CARD_COLUMN_SENTENCE));
-            String title = res.getString(res.getColumnIndex(CARD_COLUMN_TITLE));
-            String parentDeck = res.getString(res.getColumnIndex(CARD_COLUMN_PARENT_DECK));
+        while (cursor.isAfterLast() == false) {
+            int id = cursor.getInt(cursor.getColumnIndex(CARD_COLUMN_ID));
+            String sentence = cursor.getString(cursor.getColumnIndex(CARD_COLUMN_SENTENCE));
+            String title = cursor.getString(cursor.getColumnIndex(CARD_COLUMN_TITLE));
+            String parentDeck = cursor.getString(cursor.getColumnIndex(CARD_COLUMN_PARENT_DECK));
 
             array_list.add(new Card(sentence, title, id, parentDeck));
-            res.moveToNext();
+            cursor.moveToNext();
         }
 
         return array_list;

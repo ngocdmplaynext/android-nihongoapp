@@ -15,31 +15,39 @@ import java.util.ArrayList;
 
 public class Deck implements Parcelable {
 
+    private int id;
+
     private String sName;
+    private String sThemeName;
+
 
     private ArrayList<Card> alCards;
 
     public Deck() {
 
-        this(Deck.class.getName());
+        this(Deck.class.getName(), "NONE");
     }
 
-    public Deck(String name) {
+    public Deck(String name, String sThemeName) {
 
-        this(name, new ArrayList<Card>());
+        this(name, sThemeName, new ArrayList<Card>());
     }
 
-    public Deck(String name, String[] words) {
+    //FOR TESTING PURPOSE ONLY
+    public Deck(String name, String sThemeName, String[] words) {
         this.sName = name;
+        this.sThemeName = sThemeName;
         alCards = new ArrayList<>();
         for (String s : words)
             alCards.add(new Card((s), name));
     }
 
-    public Deck(String name, ArrayList<Card> cards) {
+
+    public Deck(String name, String sThemeName, ArrayList<Card> cards) {
 
         this.sName = name;
         this.alCards = cards;
+        this.sThemeName = sThemeName;
     }
 
     //=================== ARRAY LIST=================================
@@ -73,7 +81,7 @@ public class Deck implements Parcelable {
     }
 
 
-    //===================PARCEABLE=================================
+    //===================PARCELABLE=================================
 
     @Override
     public int describeContents() {
@@ -112,5 +120,38 @@ public class Deck implements Parcelable {
 
     public String getName() {
         return sName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String sName) {
+        this.sName = sName;
+    }
+
+    public ArrayList<Card> getAlCards() {
+        return alCards;
+    }
+
+    public void setAlCards(ArrayList<Card> alCards) {
+        this.alCards = alCards;
+    }
+
+    public String getsThemeName() {
+        return sThemeName;
+    }
+
+    public void setsThemeName(String sThemeName) {
+        this.sThemeName = sThemeName;
+    }
+
+    @Override
+    public String toString() {
+        return "ID:"+id+". Name:"+sName+". Parent Theme:"+sThemeName;
     }
 }

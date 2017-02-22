@@ -22,49 +22,76 @@ public class DummyInsertData {
         ArrayList<Theme> alThemes = new ArrayList<>();
         alThemes = new ArrayList<>();
         Theme theme = new Theme("Language");
-        theme.addDeck(new Deck("English", context.getResources().getStringArray(R.array.deck_english)));
-        theme.addDeck(new Deck("Japanese", context.getResources().getStringArray(R.array.deck_japanese)));
+        theme.addDeck(new Deck("English", theme.getName(),
+                context.getResources().getStringArray(R.array.deck_english)));
+        theme.addDeck(new Deck("Japanese", theme.getName(),
+                context.getResources().getStringArray(R.array.deck_japanese)));
         alThemes.add(theme);
 
-        Theme theme2 = new Theme("Animal");
-        theme.addDeck(new Deck("Wild animals", context.getResources().getStringArray(R.array.wild_animals)));
-        theme.addDeck(new Deck("Domestic animals", context.getResources().getStringArray(R.array.domestic_animals)));
-        theme.addDeck(new Deck("Sea animals", context.getResources().getStringArray(R.array.sea_animals)));
-        alThemes.add(theme2);
+        theme = new Theme("Animal");
+        theme.addDeck(new Deck("Wild animals", theme.getName(),
+                context.getResources().getStringArray(R.array.wild_animals)));
+        theme.addDeck(new Deck("Domestic animals", theme.getName(),
+                context.getResources().getStringArray(R.array.domestic_animals)));
+        theme.addDeck(new Deck("Sea animals", theme.getName(),
+                context.getResources().getStringArray(R.array.sea_animals)));
+        alThemes.add(theme);
 
-        for(Theme t: alThemes){
+        for (Theme t : alThemes) {
             //DBHelper.getInstance(context).dbDeckHelper.insertTheme(t);
 
-            for(Deck d: t.getDeck()){
-                //DBHelper.getInstance(context).dbDeckHelper.insertDeck(d);
+            for (Deck d : t.getDeck()) {
+                DBHelper.getInstance(context).dbDeckHelper.insertDeck(d);
 
-                for(Card c: d.getCards()){
+                for (Card c : d.getCards()) {
                     DBHelper.getInstance(context).dbCardHelper.insertCard(c);
                 }
             }
         }
     }
 
-    public static void getAllCards(Context context){
+    public static void getAllCards(Context context) {
         ArrayList<Card> alCards = new ArrayList<>();
 
         alCards = DBHelper.getInstance(context).dbCardHelper.getAllCard();
         Log.v(TAG, "============== DB CARDS ===============");
-        for(Card c: alCards){
+        for (Card c : alCards) {
             Log.v(TAG, c.toString());
         }
         Log.v(TAG, "============== END DB CARDS ===============");
 
     }
 
-    public static void getDeckCards(Context context){
+    public static void getDeckCards(Context context) {
         ArrayList<Card> alCards = new ArrayList<>();
 
         alCards = DBHelper.getInstance(context).dbCardHelper.getDeckCards("Wild animals");
         Log.v(TAG, "============== DB SOME CARDS ===============");
-        for(Card c: alCards){
+        for (Card c : alCards) {
             Log.v(TAG, c.toString());
         }
         Log.v(TAG, "============== END SOME DB CARDS ===============");
+    }
+
+    public static void getAllDecks(Context context) {
+        ArrayList<Deck> alCards = new ArrayList<>();
+
+        alCards = DBHelper.getInstance(context).dbDeckHelper.getAllDeck();
+        Log.v(TAG, "============== DB LANGUAGE DECKS ===============");
+        for (Deck d : alCards) {
+            Log.v(TAG, d.toString());
+        }
+        Log.v(TAG, "============== END  DB LANGUAGE DECKS ===============");
+    }
+
+    public static void getThemeDecks(Context context) {
+        ArrayList<Deck> alCards = new ArrayList<>();
+
+        alCards = DBHelper.getInstance(context).dbDeckHelper.getThemeDecks("Language");
+        Log.v(TAG, "============== DB LANGUAGE DECKS ===============");
+        for (Deck d : alCards) {
+            Log.v(TAG, d.toString());
+        }
+        Log.v(TAG, "============== END  DB LANGUAGE DECKS ===============");
     }
 }

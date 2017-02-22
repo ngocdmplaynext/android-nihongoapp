@@ -37,6 +37,8 @@ public class VoiceApplication extends Application {
 
         DummyInsertData.getAllCards(this);
         DummyInsertData.getDeckCards(this);
+        DummyInsertData.getAllDecks(this);
+        DummyInsertData.getThemeDecks(this);
     }
 
 
