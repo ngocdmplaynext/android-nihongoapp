@@ -10,9 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jp.playnext.voicecards.R;
-import com.jp.playnext.voicecards.adapter.MyDeckRecyclerVA;
 import com.jp.playnext.voicecards.adapter.ThemeRecyclerVA;
-import com.jp.playnext.voicecards.model.Card;
 import com.jp.playnext.voicecards.model.Deck;
 import com.jp.playnext.voicecards.model.Theme;
 

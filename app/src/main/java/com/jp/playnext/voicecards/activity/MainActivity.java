@@ -14,13 +14,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.jp.playnext.voicecards.R;
+import com.jp.playnext.voicecards.fragment.MainListFragment;
 import com.jp.playnext.voicecards.model.Deck;
 import com.jp.playnext.voicecards.model.Theme;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener,
+        MainListFragment.OnMainListFragmentInteraction{
 
     ArrayList<Theme> alThemes;
 
@@ -47,15 +49,31 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        initData();
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fl_theme_list_fragment, MainListFragment.newInstance(alThemes))
+                    .commit();
+        }
     }
 
     private void initData(){
         alThemes = new ArrayList<>();
-        Theme theme = new Theme();
+        Theme theme = new Theme("Language");
         theme.addDeck(new Deck("English",  getResources().getStringArray(R.array.deck_english)));
         theme.addDeck(new Deck("Japanese",  getResources().getStringArray(R.array.deck_japanese)));
+        alThemes.add(theme);
+
+        theme = new Theme("Animal");
+        theme.addDeck(new Deck("Wild animals",  getResources().getStringArray(R.array.wild_animals)));
+        theme.addDeck(new Deck("Domestic animals",  getResources().getStringArray(R.array.domestic_animals)));
+        theme.addDeck(new Deck("Sea animals",  getResources().getStringArray(R.array.sea_animals)));
         alThemes.add(theme);
 
 
@@ -118,4 +136,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public void onThemeClicked(Theme theme) {
+        //TODO Add deck lists to theme here
+        ThemeActivity.newInstance(this,theme);
+    }
 }

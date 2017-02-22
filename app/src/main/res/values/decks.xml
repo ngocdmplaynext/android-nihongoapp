@@ -14,4 +14,29 @@
         <item>Black</item>
         <item>Blue</item>
     </string-array>
+
+    <string-array name="wild_animals">
+        <item>lion</item>
+        <item>zebra</item>
+        <item>elephant</item>
+        <item>rhino</item>
+        <item>cheetah</item>
+        <item>jaguar</item>
+    </string-array>
+
+    <string-array name="domestic_animals">
+        <item>dog</item>
+        <item>cat</item>
+        <item>hamster</item>
+        <item>birds</item>
+        <item>rabbit</item>
+    </string-array>
+
+    <string-array name="sea_animals">
+        <item>dolphin</item>
+        <item>whale</item>
+        <item>sea lion</item>
+        <item>shark</item>
+        <item>sea urchin</item>
+    </string-array>
 </resources>

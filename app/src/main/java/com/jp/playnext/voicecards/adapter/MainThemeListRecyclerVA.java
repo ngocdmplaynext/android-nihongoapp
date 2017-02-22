@@ -7,38 +7,43 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jp.playnext.voicecards.R;
-import com.jp.playnext.voicecards.fragment.DeckFragment;
+import com.jp.playnext.voicecards.fragment.MainListFragment;
+import com.jp.playnext.voicecards.fragment.ThemeFragment;
 import com.jp.playnext.voicecards.model.Card;
 import com.jp.playnext.voicecards.model.Deck;
+import com.jp.playnext.voicecards.model.Theme;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Card} and makes a call to the
- * specified {@link DeckFragment.OnDeckFragmentInteraction}.
+ * specified {@link ThemeFragment.OnThemeFragmentInteraction}.
  */
-public class MyDeckRecyclerVA extends RecyclerView.Adapter<MyDeckRecyclerVA.ViewHolder> {
+public class MainThemeListRecyclerVA extends RecyclerView.Adapter<MainThemeListRecyclerVA.ViewHolder> {
 
-    private final Deck deck;
-    private final DeckFragment.OnDeckFragmentInteraction mListener;
+    private ArrayList<Theme> alThemes;
+    private final MainListFragment.OnMainListFragmentInteraction mListener;
 
-    public MyDeckRecyclerVA(Deck deck, DeckFragment.OnDeckFragmentInteraction listener) {
-        this.deck = deck;
+    public MainThemeListRecyclerVA(ArrayList<Theme> alThemes, MainListFragment.OnMainListFragmentInteraction listener) {
+        this.alThemes = alThemes;
         mListener = listener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_deck_card_item, parent, false);
+                .inflate(R.layout.fragment_main_theme_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mCard = deck.get(position);
-        holder.mSentenceView.setText(deck.get(position).getSentence());
+        holder.mTheme = alThemes.get(position);
+        holder.mSentenceView.setText(alThemes.get(position).getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +51,7 @@ public class MyDeckRecyclerVA extends RecyclerView.Adapter<MyDeckRecyclerVA.View
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onCardClicked(holder.mCard);
+                    mListener.onThemeClicked(holder.mTheme);
                 }
             }
         });
@@ -54,14 +59,14 @@ public class MyDeckRecyclerVA extends RecyclerView.Adapter<MyDeckRecyclerVA.View
 
     @Override
     public int getItemCount() {
-        return deck.getCards().size();
+        return alThemes.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        @BindView(R.id.tv_sentence)
+        @BindView(R.id.tv_theme_title)
         public TextView mSentenceView;
-        public Card mCard;
+        public Theme mTheme;
 
         public ViewHolder(View view) {
             super(view);

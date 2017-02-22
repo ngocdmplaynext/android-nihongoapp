@@ -13,20 +13,11 @@
     tools:context="com.jp.playnext.voicecards.activity.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_deck_title"
-        android:layout_centerHorizontal="true"
-        android:textAlignment="center"
-        android:textSize="30sp" />
-
     <FrameLayout
-        android:id="@+id/fl_deck_fragment"
+        android:id="@+id/fl_theme_list_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_deck_list"
+        tools:layout="@layout/fragment_theme_list"
         android:layout_below="@+id/tv_deck_title" />
 
 </RelativeLayout>
