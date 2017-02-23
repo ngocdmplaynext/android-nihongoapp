@@ -58,4 +58,8 @@
 
     </RelativeLayout>
 
+    <include layout="@layout/activity_card_results"
+             android:id="@+id/inc_results_popup"/>
+
+
 </RelativeLayout>

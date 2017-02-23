@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.jp.playnext.voicecards.R;
+import com.jp.playnext.voicecards.Utils;
 import com.jp.playnext.voicecards.model.Card;
 import com.musicg.wave.Wave;
 
@@ -45,7 +46,6 @@ public class CardFragment extends Fragment {
     @BindView(R.id.tv_card) TextView tvCard;
     @BindView(R.id.tv_expected_sentence) TextView tvExpectedSentence;
     @BindView(R.id.tv_received_sentence) TextView tvReceivedSentence;
-    @BindView(R.id.tv_percentage) TextView tvPercentage;
     @BindView(R.id.tv_best_percentage) TextView tvBestPercentage;
 
     @BindView(R.id.lc_chart) LineChart lcLineChart;
@@ -96,7 +96,6 @@ public class CardFragment extends Fragment {
         ButterKnife.bind(this, rootView);
         tvExpectedSentence.setText("");
         tvReceivedSentence.setText("");
-        tvPercentage.setText("");
         tvBestPercentage.setText("");
 
         btnPlaySound.setOnClickListener(new View.OnClickListener() {
@@ -173,7 +172,6 @@ public class CardFragment extends Fragment {
 
         tvExpectedSentence.setText(card.difference(result.get(0)));
         tvReceivedSentence.setText("Received:" + result.get(0));
-        tvPercentage.setText(String.format("%.2f", confidence[0] * 100) + "%");
         card.setBestScore(this.getContext(), confidence[0] * 100);
         tvBestPercentage.setText(card.getBestScoreString());
 

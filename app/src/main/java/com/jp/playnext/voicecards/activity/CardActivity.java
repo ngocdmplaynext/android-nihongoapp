@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jp.playnext.voicecards.R;
@@ -25,6 +26,8 @@ import com.jp.playnext.voicecards.Utils;
 import com.jp.playnext.voicecards.fragment.CardFragment;
 import com.jp.playnext.voicecards.model.Card;
 import com.jp.playnext.voicecards.model.Deck;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -46,6 +49,9 @@ public class CardActivity extends AppCompatActivity
     private static final String CARD_KEY = "card_key";
 
     @BindView(R.id.vp_cards) ViewPager vpCards;
+    @BindView(R.id.inc_results_popup) View resultsPopUp;
+    @BindView(R.id.tv_percentage_popup) TextView tvPercentage;
+
     CardSlidePagerAdapter mPagerAdapter;
 
     TextToSpeech textToSpeech;
@@ -75,6 +81,16 @@ public class CardActivity extends AppCompatActivity
             vpCards.setAdapter(mPagerAdapter);
             vpCards.setOffscreenPageLimit(mPagerAdapter.getCount());
             vpCards.setCurrentItem(mPagerAdapter.getItemPosition(card));
+            resultsPopUp.setVisibility(View.INVISIBLE);
+
+
+            resultsPopUp.findViewById(R.id.btn_continue).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    resultsPopUp.setVisibility(View.INVISIBLE);
+                }
+            });
+
 
             findViewById(R.id.btn_record_voice).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -214,6 +230,19 @@ public class CardActivity extends AppCompatActivity
             }
         } else
             toastString += " URI is null";
+
+        resultsPopUp.setVisibility(View.VISIBLE);
+        tvPercentage.setText(Utils.confidentToString(confidence[0]));
+
+        final String receivedSentence = result.get(0);
+        final float confidenceFloat = confidence[0];
+        final Context context = this;
+        resultsPopUp.findViewById(R.id.btn_result_screen).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ResultsActivity.newInstance(context, mPagerAdapter.getCurrentCard(),receivedSentence, confidenceFloat);
+            }
+        });
 
         Toast.makeText(this, toastString, Toast.LENGTH_SHORT).show();
         mPagerAdapter.getCurrentFragment().displayResult(result, confidence, "");

@@ -51,6 +51,9 @@ public class Utils {
             return false;
         }
         return true;
+    }
 
+    public static String confidentToString(float confidence){
+        return String.format("%.2f", confidence * 100 + "%");
     }
 }
