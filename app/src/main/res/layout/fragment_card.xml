@@ -113,4 +113,15 @@
         android:layout_alignTop="@+id/tv_result_text"
         android:id="@+id/lc_chart"></com.github.mikephil.charting.charts.LineChart>
 
+    <Button
+        android:text="Play Sound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/separator_card"
+        android:layout_toRightOf="@+id/tv_expected_sentence"
+        android:layout_toEndOf="@+id/tv_expected_sentence"
+        android:layout_marginLeft="28dp"
+        android:layout_marginStart="28dp"
+        android:id="@+id/btn_play_sound"/>
+
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.jp.playnext.voicecards.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -38,6 +40,8 @@ public class CardFragment extends Fragment {
 
     Card card;
 
+    OnDeckFragmentInteraction mListener;
+
     @BindView(R.id.tv_card) TextView tvCard;
     @BindView(R.id.tv_expected_sentence) TextView tvExpectedSentence;
     @BindView(R.id.tv_received_sentence) TextView tvReceivedSentence;
@@ -45,6 +49,9 @@ public class CardFragment extends Fragment {
     @BindView(R.id.tv_best_percentage) TextView tvBestPercentage;
 
     @BindView(R.id.lc_chart) LineChart lcLineChart;
+
+    @BindView(R.id.btn_play_sound) Button btnPlaySound;
+
 
     //DEBUG
     @BindView(R.id.tv_result_text) TextView tvTextResult;
@@ -92,6 +99,13 @@ public class CardFragment extends Fragment {
         tvPercentage.setText("");
         tvBestPercentage.setText("");
 
+        btnPlaySound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSoundbuttonPressed();
+            }
+        });
+
         //Debug
         tvTextResult.setText("");
         tvResultAnalysis.setText("");
@@ -105,10 +119,10 @@ public class CardFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    /*
-    public void onButtonPressed(Uri uri) {
+
+    public void onSoundbuttonPressed() {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onPlaySoundClicked(card);
         }
     }
 
@@ -116,15 +130,15 @@ public class CardFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnDeckFragmentInteraction) {
+            mListener = (OnDeckFragmentInteraction) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
 
     }
-    */
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -228,5 +242,15 @@ public class CardFragment extends Fragment {
         lcLineChart.invalidate(); // refresh
 
     }
+
+    public Card getCard(){
+        return card;
+    }
+
+    public interface OnDeckFragmentInteraction {
+        // TODO: Update argument type and name
+        void onPlaySoundClicked(Card card);
+    }
+
 
 }

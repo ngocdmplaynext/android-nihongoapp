@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -35,7 +36,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class CardActivity extends AppCompatActivity {
+public class CardActivity extends AppCompatActivity
+        implements CardFragment.OnDeckFragmentInteraction {
 
     public final static String TAG = CardActivity.class.getSimpleName();
 
@@ -46,8 +48,10 @@ public class CardActivity extends AppCompatActivity {
     @BindView(R.id.vp_cards) ViewPager vpCards;
     CardSlidePagerAdapter mPagerAdapter;
 
+    TextToSpeech textToSpeech;
 
-    String myLanguage = Locale.JAPAN.toString();
+
+    Locale myLanguage = Locale.JAPAN;
 
     public static void newInstance(Context context, Deck deck, Card selectedCard) {
         Intent intent = new Intent(context, CardActivity.class);
@@ -79,12 +83,26 @@ public class CardActivity extends AppCompatActivity {
                 }
             });
 
+            InitTextToSpeech();
+
         } else {
             Toast.makeText(this, "Deck is Empty", Toast.LENGTH_SHORT);
             this.finish();
         }
 
 
+    }
+
+    public void InitTextToSpeech() {
+        if (textToSpeech == null)
+            textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+                @Override
+                public void onInit(int status) {
+                    if (status != TextToSpeech.ERROR) {
+                        textToSpeech.setLanguage(myLanguage);
+                    }
+                }
+            });
     }
 
     public void onRadioButtonClicked(View view) {
@@ -95,13 +113,17 @@ public class CardActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.rb_japanese:
                 if (checked)
-                    myLanguage = Locale.JAPAN.toString();
+                    myLanguage = Locale.JAPAN;
                 break;
             case R.id.rb_english:
                 if (checked)
-                    myLanguage = Locale.US.toString();
+                    myLanguage = Locale.US;
                 break;
         }
+
+        if(textToSpeech != null)
+            textToSpeech.setLanguage(myLanguage);
+
     }
 
     public void onMic() {
@@ -112,7 +134,7 @@ public class CardActivity extends AppCompatActivity {
 
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.ACTION_RECOGNIZE_SPEECH, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, myLanguage);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, myLanguage.toString());
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, myLanguage);
         intent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, myLanguage);
         intent.putExtra(RecognizerIntent.EXTRA_CONFIDENCE_SCORES, true);
@@ -199,6 +221,24 @@ public class CardActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onPlaySoundClicked(Card card) {
+        String toSpeak = card.getSentence();
+        Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
+        textToSpeech.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+    @Override
+    public void onPause() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+            textToSpeech = null;
+        }
+        super.onPause();
+    }
+
+
     /**
      * A simple pager adapter for cardsFragments objects, in
      * sequence.
@@ -237,6 +277,11 @@ public class CardActivity extends AppCompatActivity {
         public CardFragment getCurrentFragment() {
             return mCurrentFragment;
         }
+
+        public Card getCurrentCard() {
+            return mCurrentFragment.getCard();
+        }
+
 
         //...
         @Override
