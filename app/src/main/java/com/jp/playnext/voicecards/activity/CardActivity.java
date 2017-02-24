@@ -1,18 +1,13 @@
 package com.jp.playnext.voicecards.activity;
 
-import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,16 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jp.playnext.voicecards.R;
-import com.jp.playnext.voicecards.Utils;
+import com.jp.playnext.voicecards.utils.Utils;
 import com.jp.playnext.voicecards.fragment.CardFragment;
 import com.jp.playnext.voicecards.model.Card;
 import com.jp.playnext.voicecards.model.Deck;
 
-import org.w3c.dom.Text;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -158,7 +148,7 @@ public class CardActivity extends VoiceListenerActivity
                 RecognizerIntent.EXTRA_CONFIDENCE_SCORES);
 
 
-        //resultsPopUp.setVisibility(View.VISIBLE);
+        resultsPopUp.setVisibility(View.VISIBLE);
         tvPercentage.setText(Utils.confidentToString(confidence[0]));
 
         final String receivedSentence = result.get(0);
@@ -174,6 +164,11 @@ public class CardActivity extends VoiceListenerActivity
         mPagerAdapter.getCurrentFragment().displayResult(result, confidence, "");
 
 
+    }
+
+    @Override
+    public void onClickWord(String wordClicked) {
+        Log.v(TAG, "on word clicked");
     }
 
     @Override

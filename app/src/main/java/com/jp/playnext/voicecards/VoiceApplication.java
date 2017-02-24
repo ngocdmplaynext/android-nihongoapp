@@ -7,11 +7,16 @@ package com.jp.playnext.voicecards;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.util.Log;
+import android.view.View;
 
 import com.jp.playnext.voicecards.database.DBHelper;
 import com.jp.playnext.voicecards.database.DummyInsertData;
+import com.jp.playnext.voicecards.utils.TouchableSpan;
 
 public class VoiceApplication extends Application {
 

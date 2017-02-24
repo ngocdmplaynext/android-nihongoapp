@@ -1,6 +1,5 @@
-package com.jp.playnext.voicecards;
+package com.jp.playnext.voicecards.utils;
 
-import android.icu.lang.UCharacter;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -61,8 +60,7 @@ public class Utils {
     }
 
     public static String confidentToString(float confidence){
-        return "Test result %";
-        //return String.format("%.2f", (confidence * 100.0f) + "%");
+        return String.format("%.2f", (confidence * 100.0f))+"%";
     }
 
 

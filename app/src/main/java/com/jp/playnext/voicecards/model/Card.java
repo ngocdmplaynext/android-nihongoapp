@@ -14,16 +14,9 @@ import android.util.Log;
 import android.view.View;
 
 
-import com.jp.playnext.voicecards.Utils;
+import com.jp.playnext.voicecards.utils.TouchableSpan;
+import com.jp.playnext.voicecards.utils.Utils;
 import com.jp.playnext.voicecards.database.DBHelper;
-import com.jp.playnext.voicecards.database.DBThemeHelper;
-
-import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
-
-import java.lang.reflect.Array;
-import java.util.LinkedList;
-
-import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.*;
 
 /**
  * Created by danielmorais on 2/8/17.
@@ -56,61 +49,7 @@ public class Card implements Parcelable {
     }
 
 
-    /**
-     * @param text
-     * @return SpannableString highlighting differences
-     */
-    public SpannableString difference(String text) {
-        return difference(text, null);
-    }
 
-
-    /**
-     * @param text
-     * @return SpannableString highlighting differences
-     */
-    public SpannableString difference(String text, Color color) {
-        Log.v(TAG, "Expected words:" + sentence);
-        Log.v(TAG, "Words received words:" + text);
-
-        //return differenceDiffLib(text, color);
-        return differenceTest(text);
-    }
-
-    private SpannableString differenceTest(String resultText) {
-        String[] sentenceArray = sentence.split("\\s+");
-
-        SpannableString spannable = new SpannableString(getDisplaySentence());
-        String backgroundColor = "#FF0000";
-
-        int start = 0;
-        int end = 0;
-        for (final String s : sentenceArray) {
-            end = end + s.length();
-
-            if (!resultText.toLowerCase().contains(s.toLowerCase())) {
-                spannable.setSpan(
-                        new BackgroundColorSpan(Color.parseColor(backgroundColor)),
-                        start,
-                        end,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                spannable.setSpan(new ClickableSpan() {
-                                      @Override
-                                      public void onClick(View widget) {
-                                          Log.v(TAG, "Text:" + s + "clicked");
-                                      }
-                                  },
-                        start,
-                        end,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-            }
-            start = end;
-        }
-
-        return spannable;
-    }
 
     /**
      * @param

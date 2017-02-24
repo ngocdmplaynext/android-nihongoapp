@@ -25,26 +25,6 @@
         android:layout_marginTop="2dp"
         android:background="@android:color/darker_gray" />
 
-    <TextView
-        android:id="@+id/tv_expected_sentence"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/separator_card"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="13dp"
-        android:text="Original sentence"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/tv_received_sentence"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_expected_sentence"
-        android:layout_marginTop="13dp"
-        android:text="Said sentence"
-        android:layout_centerHorizontal="true" />
-
-
 
     <TextView
         android:id="@+id/tv_best_percentage"
@@ -52,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="false"
         android:layout_alignParentStart="false"
-        android:layout_below="@+id/tv_received_sentence"
+        android:layout_below="@+id/separator_card"
         android:text="%"
         android:textSize="30sp"
         android:layout_centerHorizontal="true" />
@@ -65,30 +45,12 @@
         android:layout_marginTop="2dp"
         android:background="@android:color/darker_gray" />
 
-    <TextView
-        android:id="@+id/tv_result_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/separator"
-        android:layout_marginTop="13dp"
-        android:text="Result" />
 
-
-    <TextView
-        android:id="@+id/tv_result_analysis"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/tv_result_text"
-        android:text="Result analysis" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignTop="@+id/tv_result_text"
+        android:layout_alignTop="@+id/separator"
         android:id="@+id/lc_chart"></com.github.mikephil.charting.charts.LineChart>
 
     <Button
@@ -98,5 +60,6 @@
         android:id="@+id/btn_play_sound"
         android:layout_below="@+id/tv_card"
         android:layout_centerHorizontal="true"/>
+
 
 </RelativeLayout>

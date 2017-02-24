@@ -2,32 +2,34 @@ package com.jp.playnext.voicecards.activity;
 
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.jp.playnext.voicecards.R;
-import com.jp.playnext.voicecards.Utils;
+import com.jp.playnext.voicecards.model.Card;
+import com.jp.playnext.voicecards.utils.TouchableSpan;
+import com.jp.playnext.voicecards.utils.Utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Locale;
 
 /**
  * Created by danielmorais on 2/24/17.
  */
 
-public class VoiceListenerActivity extends AppCompatActivity {
+public abstract class VoiceListenerActivity extends AppCompatActivity {
 
-    public final static String TAG = CardActivity.class.getSimpleName();
+    public final static String TAG = VoiceListenerActivity.class.getSimpleName();
 
     protected static final int VR_Request = 100;
     protected Locale myLanguage = Locale.JAPAN;
@@ -94,12 +96,13 @@ public class VoiceListenerActivity extends AppCompatActivity {
     }
 
 
-    public void processResults(Intent intent) {
-        //Abstrat
+    public abstract void processResults(Intent intent);
 
-        /*
+    public File getAudio(Intent intent) {
+
+
         //Code to get audio
-              Uri audioUri = intent.getData();
+        Uri audioUri = intent.getData();
         ContentResolver contentResolver = getContentResolver();
         String toastString = " Failed to save";
         if (audioUri != null) {
@@ -112,6 +115,8 @@ public class VoiceListenerActivity extends AppCompatActivity {
                 if (Utils.saveAudio(filestream, audioFile))
                     toastString = "Saved file to location:" + audioFile.getAbsolutePath();
 
+                return audioFile;
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -120,7 +125,62 @@ public class VoiceListenerActivity extends AppCompatActivity {
 
         Toast.makeText(this, toastString, Toast.LENGTH_SHORT).show();
 
-         */
+        return null;
+
+
     }
+
+
+    /**
+     * @param sentence
+     * @param resultText
+     * @return difference between both texts
+     */
+    public SpannableString difference(String text1, String text2) {
+        return differenceTest(text1, text1, text2);
+    }
+
+
+    /**
+     * @param card
+     * @param resultText
+     * @return
+     */
+    public SpannableString difference(Card card, String resultText) {
+        return differenceTest(card.getSentence(), card.getDisplaySentence(), resultText);
+    }
+
+    private SpannableString differenceTest(String sentence, String displaySentence, String resultText) {
+        String[] sentenceArray = sentence.split("\\s+");
+
+        SpannableString spannable = new SpannableString(displaySentence);
+        String backgroundColor = "#FF0000";
+        String textColor = "#FFFFFF";
+
+        int start = 0;
+        int end = 0;
+        for (final String s : sentenceArray) {
+            end = end + s.length();
+
+            if (!resultText.toLowerCase().contains(s.toLowerCase())) {
+
+                spannable.setSpan(new TouchableSpan(Color.parseColor(textColor), Color.parseColor(backgroundColor)) {
+                                      @Override
+                                      public void onClick(View widget) {
+                                          onClickWord(s);
+                                      }
+                                  },
+                        start,
+                        end,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            }
+            start = end;
+        }
+
+        return spannable;
+    }
+
+    public abstract void onClickWord(String wordClicked);
 
 }

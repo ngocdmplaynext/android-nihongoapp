@@ -16,7 +16,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.jp.playnext.voicecards.R;
-import com.jp.playnext.voicecards.Utils;
 import com.jp.playnext.voicecards.model.Card;
 import com.musicg.wave.Wave;
 
@@ -44,18 +43,11 @@ public class CardFragment extends Fragment {
     OnDeckFragmentInteraction mListener;
 
     @BindView(R.id.tv_card) TextView tvCard;
-    @BindView(R.id.tv_expected_sentence) TextView tvExpectedSentence;
-    @BindView(R.id.tv_received_sentence) TextView tvReceivedSentence;
     @BindView(R.id.tv_best_percentage) TextView tvBestPercentage;
 
     @BindView(R.id.lc_chart) LineChart lcLineChart;
 
     @BindView(R.id.btn_play_sound) Button btnPlaySound;
-
-
-    //DEBUG
-    @BindView(R.id.tv_result_text) TextView tvTextResult;
-    @BindView(R.id.tv_result_analysis) TextView tvResultAnalysis;
 
     //private OnFragmentInteractionListener mListener;
 
@@ -94,8 +86,6 @@ public class CardFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_card, container, false);
 
         ButterKnife.bind(this, rootView);
-        tvExpectedSentence.setText("");
-        tvReceivedSentence.setText("");
         tvBestPercentage.setText("");
 
         btnPlaySound.setOnClickListener(new View.OnClickListener() {
@@ -104,10 +94,6 @@ public class CardFragment extends Fragment {
                 onSoundbuttonPressed();
             }
         });
-
-        //Debug
-        tvTextResult.setText("");
-        tvResultAnalysis.setText("");
 
         if (card != null) {
             tvCard.setText(card.getDisplaySentence());
@@ -169,46 +155,11 @@ public class CardFragment extends Fragment {
      */
     public void displayResult(ArrayList<String> result, float[] confidence, String filePath) {
 
-
-        tvExpectedSentence.setText(card.difference(result.get(0)));
-        tvReceivedSentence.setText("Received:" + result.get(0));
         card.setBestScore(this.getContext(), confidence[0] * 100);
         tvBestPercentage.setText(card.getBestScoreString());
 
         audioWave(filePath);
 
-        /*
-        //==========================DEBUG===========================================================
-
-        String displayText = "";
-
-        for (int i = 0; i < result.size(); i++) {
-            Log.d("Text", result.get(i));
-            displayText += "Result " + i + ":" + result.get(i);
-            if (confidence.length > i)
-                displayText += " confidence:" + String.valueOf(confidence[i] * 100) + "\n";
-        }
-
-        for (float textConfidence : confidence) {
-            Log.d("Confidence", String.valueOf(textConfidence * 100));
-            displayText += textConfidence + " !;! ";
-
-        }
-
-        tvResultAnalysis.setText(displayText);
-
-        String[] arr = result.get(0).split(" ");
-
-        tvTextResult.setText("");
-
-        for (String s : arr) {
-            SpannableString str = new SpannableString(s);
-
-            tvTextResult.setText(TextUtils.concat(tvTextResult.getText(), str) + " ");
-        }
-
-        //==========================================================================================
-        */
     }
 
     public void audioWave(String filePath) {

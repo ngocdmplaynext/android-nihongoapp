@@ -2,18 +2,22 @@ package com.jp.playnext.voicecards.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jp.playnext.voicecards.R;
-import com.jp.playnext.voicecards.Utils;
+import com.jp.playnext.voicecards.utils.Utils;
 import com.jp.playnext.voicecards.model.Card;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ResultsActivity extends AppCompatActivity {
+public class ResultsActivity extends VoiceListenerActivity {
+
+    public final static String TAG = ResultsActivity.class.getSimpleName();
 
     private static final String ARGS_CARD = "args_card";
     private static final String ARGS_SENTENCE = "args_sentence";
@@ -25,11 +29,11 @@ public class ResultsActivity extends AppCompatActivity {
     public String sResultSentence;
     public float fConfidence;
 
-    @BindView(R.id.tv_expected_sentence_result) TextView tvExpectedSentence;
+    @BindView(R.id.tv_card_sentence) TextView tvCardSentence;
     @BindView(R.id.tv_received_sentence_result) TextView tvReceivedSentence;
-    @BindView(R.id.tv_result_percentage) TextView tvPercentage;
+    @BindView(R.id.tv_percentage_result) TextView tvPercentage;
 
-    public static void newInstance(Context context, Card card, String resultSentence, float resultPercentage){
+    public static void newInstance(Context context, Card card, String resultSentence, float resultPercentage) {
         Intent intent = new Intent(context, ResultsActivity.class);
         intent.putExtra(ARGS_CARD, card);
         intent.putExtra(ARGS_SENTENCE, resultSentence);
@@ -43,16 +47,30 @@ public class ResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_results);
         ButterKnife.bind(this);
 
-        if(getIntent() != null){
+        if (getIntent() != null) {
             card = (Card) getIntent().getParcelableExtra(ARGS_CARD);
             sResultSentence = getIntent().getStringExtra(ARGS_SENTENCE);
             fConfidence = getIntent().getFloatExtra(ARGS_PERCENTAGE, 0.0f);
         }
 
-        tvExpectedSentence.setText(card.difference(sResultSentence));
+        tvCardSentence.setText(difference(card, sResultSentence));
+        tvCardSentence.setMovementMethod(LinkMovementMethod.getInstance());
         tvReceivedSentence.setText("Received:" + sResultSentence);
         tvPercentage.setText(Utils.confidentToString(fConfidence));
         //card.setBestScore(this.getContext(), confidence[0] * 100);
         //tvBestPercentage.setText(card.getBestScoreString());
+    }
+
+    @Override
+    public void processResults(Intent intent) {
+        //Show popup with word results
+    }
+
+    @Override
+    public void onClickWord(String wordClicked) {
+        Toast.makeText(this, wordClicked + " Clicked", Toast.LENGTH_LONG).show();
+        Log.v(TAG, "Word:" + wordClicked);
+        //Listen for word
+
     }
 }
