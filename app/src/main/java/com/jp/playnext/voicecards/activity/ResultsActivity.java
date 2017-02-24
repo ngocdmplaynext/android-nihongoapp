@@ -3,6 +3,7 @@ package com.jp.playnext.voicecards.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.widget.TextView;
@@ -26,8 +27,10 @@ public class ResultsActivity extends VoiceListenerActivity {
 
     public Card card;
 
-    public String sResultSentence;
-    public float fConfidence;
+    protected String sResultSentence;
+    protected float fConfidence;
+
+    protected String prompt = "";
 
     @BindView(R.id.tv_card_sentence) TextView tvCardSentence;
     @BindView(R.id.tv_received_sentence_result) TextView tvReceivedSentence;
@@ -63,13 +66,19 @@ public class ResultsActivity extends VoiceListenerActivity {
 
     @Override
     public void processResults(Intent intent) {
+        String word = prompt;
         //Show popup with word results
+        float[] confidence = intent.getFloatArrayExtra(
+                RecognizerIntent.EXTRA_CONFIDENCE_SCORES);
+        Toast.makeText(this, word + ":" + Utils.confidentToString(confidence[0]), Toast.LENGTH_LONG).show();
+
     }
 
     @Override
     public void onClickWord(String wordClicked) {
-        Toast.makeText(this, wordClicked + " Clicked", Toast.LENGTH_LONG).show();
         Log.v(TAG, "Word:" + wordClicked);
+        prompt = wordClicked;
+        onMic(wordClicked);
         //Listen for word
 
     }

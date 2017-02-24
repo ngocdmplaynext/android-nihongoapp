@@ -64,6 +64,22 @@ public class CardActivity extends VoiceListenerActivity
             Card card = getIntent().getParcelableExtra(CARD_KEY);
 
             mPagerAdapter = new CardSlidePagerAdapter(getSupportFragmentManager(), deck);
+            vpCards.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    resultsPopUp.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
             vpCards.setAdapter(mPagerAdapter);
             vpCards.setOffscreenPageLimit(mPagerAdapter.getCount());
             vpCards.setCurrentItem(mPagerAdapter.getItemPosition(card));
@@ -90,7 +106,7 @@ public class CardActivity extends VoiceListenerActivity
             findViewById(R.id.btn_record_voice).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onMic();
+                    onMic(mPagerAdapter.getCurrentCard().getDisplaySentence());
                 }
             });
 

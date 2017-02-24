@@ -35,10 +35,10 @@ public abstract class VoiceListenerActivity extends AppCompatActivity {
     protected Locale myLanguage = Locale.JAPAN;
 
     public void onMic() {
-        promptSpeechInput();
+        onMic("");
     }
 
-    public void promptSpeechInput() {
+    public void onMic(String prompt) {
 
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.ACTION_RECOGNIZE_SPEECH, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -46,7 +46,7 @@ public abstract class VoiceListenerActivity extends AppCompatActivity {
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, myLanguage);
         intent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, myLanguage);
         intent.putExtra(RecognizerIntent.EXTRA_CONFIDENCE_SCORES, true);
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Say a word!");
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, prompt);
 
         // for getting audio file returned
         //NOT WORKING
@@ -132,8 +132,8 @@ public abstract class VoiceListenerActivity extends AppCompatActivity {
 
 
     /**
-     * @param sentence
-     * @param resultText
+     * @param text1
+     * @param text2
      * @return difference between both texts
      */
     public SpannableString difference(String text1, String text2) {
