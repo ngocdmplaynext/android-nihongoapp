@@ -39,12 +39,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class CardActivity extends AppCompatActivity
+public class CardActivity extends VoiceListenerActivity
         implements CardFragment.OnDeckFragmentInteraction {
 
     public final static String TAG = CardActivity.class.getSimpleName();
 
-    private static final int VR_Request = 100;
     private static final String DECK_KEY = "deck_key";
     private static final String CARD_KEY = "card_key";
 
@@ -55,9 +54,6 @@ public class CardActivity extends AppCompatActivity
     CardSlidePagerAdapter mPagerAdapter;
 
     TextToSpeech textToSpeech;
-
-
-    Locale myLanguage = Locale.JAPAN;
 
     public static void newInstance(Context context, Deck deck, Card selectedCard) {
         Intent intent = new Intent(context, CardActivity.class);
@@ -151,67 +147,8 @@ public class CardActivity extends AppCompatActivity
 
     }
 
-    public void onMic() {
-        promptSpeechInput();
-    }
 
-    public void promptSpeechInput() {
-
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.ACTION_RECOGNIZE_SPEECH, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, myLanguage.toString());
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, myLanguage);
-        intent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, myLanguage);
-        intent.putExtra(RecognizerIntent.EXTRA_CONFIDENCE_SCORES, true);
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Say a word!");
-
-        // for getting audio file returned
-        //NOT WORKING
-        //intent.putExtra("android.speech.extra.GET_AUDIO_FORMAT", "audio/AMR");
-        intent.putExtra("android.speech.extra.GET_AUDIO", true);
-
-
-        try {
-            startActivityForResult(intent, VR_Request);
-        } catch (ActivityNotFoundException a) {
-            Toast.makeText(CardActivity.this, "Your device doesn't support speech recognition,", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-
-        if (requestCode == VR_Request) {
-            switch (resultCode) {
-                case RESULT_OK:
-                    Log.i(TAG, "RESULT_OK");
-                    processResults(intent);
-                    break;
-                case RESULT_CANCELED:
-                    Log.i(TAG, "RESULT_CANCELED");
-                    break;
-                case RecognizerIntent.RESULT_AUDIO_ERROR:
-                    Log.i(TAG, "RESULT_AUDIO_ERROR");
-                    break;
-                case RecognizerIntent.RESULT_CLIENT_ERROR:
-                    Log.i(TAG, "RESULT_CLIENT_ERROR");
-                    break;
-                case RecognizerIntent.RESULT_NETWORK_ERROR:
-                    Log.i(TAG, "RESULT_NETWORK_ERROR");
-                    break;
-                case RecognizerIntent.RESULT_NO_MATCH:
-                    Log.i(TAG, "RESULT_NO_MATCH");
-                    break;
-                case RecognizerIntent.RESULT_SERVER_ERROR:
-                    Log.i(TAG, "RESULT_SERVER_ERROR");
-                    break;
-                default:
-                    Log.i(TAG, "RESULT_UNKNOWN");
-                    break;
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, intent);
-    }
-
+    @Override
     public void processResults(Intent intent) {
 
         ArrayList<String> result = intent.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
@@ -221,26 +158,7 @@ public class CardActivity extends AppCompatActivity
                 RecognizerIntent.EXTRA_CONFIDENCE_SCORES);
 
 
-        Uri audioUri = intent.getData();
-        ContentResolver contentResolver = getContentResolver();
-        String toastString = " Failed to save";
-        if (audioUri != null) {
-            try {
-                InputStream filestream = contentResolver.openInputStream(audioUri);
-
-                File sdcard = Environment.getExternalStorageDirectory();
-                File storagePath = new File(sdcard.getAbsolutePath() + "/Music");
-                File audioFile = new File(storagePath + "/" + "test" + ".wav");
-                if (Utils.saveAudio(filestream, audioFile))
-                    toastString = "Saved file to location:" + audioFile.getAbsolutePath();
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        } else
-            toastString += " URI is null";
-
-        resultsPopUp.setVisibility(View.VISIBLE);
+        //resultsPopUp.setVisibility(View.VISIBLE);
         tvPercentage.setText(Utils.confidentToString(confidence[0]));
 
         final String receivedSentence = result.get(0);
@@ -253,7 +171,6 @@ public class CardActivity extends AppCompatActivity
             }
         });
 
-        Toast.makeText(this, toastString, Toast.LENGTH_SHORT).show();
         mPagerAdapter.getCurrentFragment().displayResult(result, confidence, "");
 
 

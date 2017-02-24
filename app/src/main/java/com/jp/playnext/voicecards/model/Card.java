@@ -6,9 +6,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
+import android.text.style.ClickableSpan;
 import android.util.Log;
+import android.view.View;
 
 
 import com.jp.playnext.voicecards.Utils;
@@ -28,7 +31,7 @@ import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.*;
 
 public class Card implements Parcelable {
 
-    private static final String TAG = Card.class.getSimpleName()+"123";
+    private static final String TAG = Card.class.getSimpleName() + "123";
     private int id;
     private String sentence;
     private String title;
@@ -82,15 +85,26 @@ public class Card implements Parcelable {
 
         int start = 0;
         int end = 0;
-        for (String s : sentenceArray) {
+        for (final String s : sentenceArray) {
             end = end + s.length();
 
-            if (!resultText.contains(s)) {
+            if (!resultText.toLowerCase().contains(s.toLowerCase())) {
                 spannable.setSpan(
                         new BackgroundColorSpan(Color.parseColor(backgroundColor)),
                         start,
                         end,
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                spannable.setSpan(new ClickableSpan() {
+                                      @Override
+                                      public void onClick(View widget) {
+                                          Log.v(TAG, "Text:" + s + "clicked");
+                                      }
+                                  },
+                        start,
+                        end,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
             }
             start = end;
         }
