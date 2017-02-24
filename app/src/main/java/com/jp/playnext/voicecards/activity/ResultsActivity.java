@@ -30,7 +30,7 @@ public class ResultsActivity extends AppCompatActivity {
     @BindView(R.id.tv_result_percentage) TextView tvPercentage;
 
     public static void newInstance(Context context, Card card, String resultSentence, float resultPercentage){
-        Intent intent = new Intent();
+        Intent intent = new Intent(context, ResultsActivity.class);
         intent.putExtra(ARGS_CARD, card);
         intent.putExtra(ARGS_SENTENCE, resultSentence);
         intent.putExtra(ARGS_PERCENTAGE, resultPercentage);

@@ -110,7 +110,7 @@ public class CardFragment extends Fragment {
         tvResultAnalysis.setText("");
 
         if (card != null) {
-            tvCard.setText(card.getSentence());
+            tvCard.setText(card.getDisplaySentence());
             tvBestPercentage.setText(card.getBestScoreString());
         }
 

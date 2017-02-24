@@ -1,12 +1,19 @@
 package com.jp.playnext.voicecards;
 
+import android.icu.lang.UCharacter;
+import android.text.TextUtils;
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.lang.Character.UnicodeBlock;
 
 /**
  * Created by danielmorais on 2/8/17.
@@ -54,6 +61,31 @@ public class Utils {
     }
 
     public static String confidentToString(float confidence){
-        return String.format("%.2f", confidence * 100 + "%");
+        return "Test result %";
+        //return String.format("%.2f", (confidence * 100.0f) + "%");
+    }
+
+
+    private final static Set<UnicodeBlock> japaneseUnicodeBlocks = new HashSet<UnicodeBlock>() {{
+        add(UnicodeBlock.HIRAGANA);
+        add(UnicodeBlock.KATAKANA);
+        add(UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS);
+    }};
+
+
+    public static boolean isJapanese(String text){
+        if(TextUtils.isEmpty(text))
+            return false;
+        for (char c : text.toCharArray()) {
+            if (japaneseUnicodeBlocks.contains(UnicodeBlock.of(c))) {
+                return true;
+            } else {
+                //Not a japanese character
+            }
+        }
+        Log.v("utils","Text:" +text + "is NOT japanese");
+
+        return false;
+
     }
 }

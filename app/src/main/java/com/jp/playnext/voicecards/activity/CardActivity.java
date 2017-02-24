@@ -82,6 +82,15 @@ public class CardActivity extends AppCompatActivity
             vpCards.setOffscreenPageLimit(mPagerAdapter.getCount());
             vpCards.setCurrentItem(mPagerAdapter.getItemPosition(card));
             resultsPopUp.setVisibility(View.INVISIBLE);
+            final Context context = this;
+
+            //TODO: DELETE, TEST PURPOSE ONLY
+            resultsPopUp.findViewById(R.id.btn_result_screen).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ResultsActivity.newInstance(context, mPagerAdapter.getCurrentCard()," test", 5.2f);
+                }
+            });
 
 
             resultsPopUp.findViewById(R.id.btn_continue).setOnClickListener(new View.OnClickListener() {
@@ -252,7 +261,7 @@ public class CardActivity extends AppCompatActivity
 
     @Override
     public void onPlaySoundClicked(Card card) {
-        String toSpeak = card.getSentence();
+        String toSpeak = card.getDisplaySentence();
         Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
         textToSpeech.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
     }

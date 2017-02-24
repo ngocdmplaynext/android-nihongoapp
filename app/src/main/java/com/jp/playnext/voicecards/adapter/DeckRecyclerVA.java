@@ -38,7 +38,7 @@ public class DeckRecyclerVA extends RecyclerView.Adapter<DeckRecyclerVA.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mCard = deck.get(position);
-        holder.mSentenceView.setText(deck.get(position).getSentence());
+        holder.mSentenceView.setText(deck.get(position).getDisplaySentence());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

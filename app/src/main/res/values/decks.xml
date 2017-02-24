@@ -2,8 +2,9 @@
 <resources>
     <string-array name="deck_japanese">
         <item>日本語</item>
-        <item>こんばんは</item>
-        <item>おはようございます</item>
+        <item>こん ばん は</item>
+        <item>おはよう ございます</item>
+        <item>いい　天気 です　ね</item>
         <item>日本</item>
     </string-array>
     <string-array name="deck_english">
@@ -16,7 +17,7 @@
     </string-array>
 
     <string-array name="wild_animals">
-        <item>lion</item>
+        <item>this is a lion</item>
         <item>zebra</item>
         <item>elephant</item>
         <item>rhino</item>

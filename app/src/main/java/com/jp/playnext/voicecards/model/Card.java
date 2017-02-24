@@ -11,11 +11,13 @@ import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 
 
+import com.jp.playnext.voicecards.Utils;
 import com.jp.playnext.voicecards.database.DBHelper;
 import com.jp.playnext.voicecards.database.DBThemeHelper;
 
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 
+import java.lang.reflect.Array;
 import java.util.LinkedList;
 
 import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.*;
@@ -26,7 +28,7 @@ import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.*;
 
 public class Card implements Parcelable {
 
-    private static final String TAG = Card.class.getSimpleName();
+    private static final String TAG = Card.class.getSimpleName()+"123";
     private int id;
     private String sentence;
     private String title;
@@ -68,14 +70,40 @@ public class Card implements Parcelable {
         Log.v(TAG, "Expected words:" + sentence);
         Log.v(TAG, "Words received words:" + text);
 
-        return differenceDiffLib(text, color);
+        //return differenceDiffLib(text, color);
+        return differenceTest(text);
+    }
+
+    private SpannableString differenceTest(String resultText) {
+        String[] sentenceArray = sentence.split("\\s+");
+
+        SpannableString spannable = new SpannableString(getDisplaySentence());
+        String backgroundColor = "#FF0000";
+
+        int start = 0;
+        int end = 0;
+        for (String s : sentenceArray) {
+            end = end + s.length();
+
+            if (!resultText.contains(s)) {
+                spannable.setSpan(
+                        new BackgroundColorSpan(Color.parseColor(backgroundColor)),
+                        start,
+                        end,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+            start = end;
+        }
+
+        return spannable;
     }
 
     /**
-     * @param text
-     * @param color
+     * @param
+     * @param
      * @return SpannableString highlighting differences
      */
+    /*
     private SpannableString differenceDiffLib(String text, Color color) {
         DiffMatchPatch diff = new DiffMatchPatch();
 
@@ -98,16 +126,16 @@ public class Card implements Parcelable {
             String backgroundColor = "#00000000";
             switch (diff1.operation) {
                 case INSERT: //Do nothing
-                    /*
+
                     // Uncomment to paint inserted text
-                    backgroundColor = "#FF0000";
-                    spannable.setSpan(
-                            new BackgroundColorSpan(Color.parseColor(backgroundColor)),
-                            start,
-                            end,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    break;
-                    */
+//                    backgroundColor = "#FF0000";
+//                    spannable.setSpan(
+//                            new BackgroundColorSpan(Color.parseColor(backgroundColor)),
+//                            start,
+//                            end,
+//                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                    break;
+
                     continue;
 
                 case DELETE: //Paint red
@@ -132,7 +160,7 @@ public class Card implements Parcelable {
 
         return spannable;
     }
-
+*/
     @Override
     public int describeContents() {
         return 0;
@@ -178,6 +206,18 @@ public class Card implements Parcelable {
         this.id = id;
     }
 
+    /**
+     * Remove spaces if a sentence is Japanese
+     *
+     * @return
+     */
+    public String getDisplaySentence() {
+        if (Utils.isJapanese(sentence))
+            return sentence.replaceAll("\\s+", "");
+
+        return sentence;
+    }
+
     public String getSentence() {
         return sentence;
     }
@@ -219,7 +259,7 @@ public class Card implements Parcelable {
     public void setBestScore(Context context, float bestScore) {
         if (bestScore > this.bestScore) {
             this.bestScore = bestScore;
-            if(id < -1)
+            if (id < -1)
                 DBHelper.getInstance(context).dbCardHelper.insertCard(this);
             else
                 DBHelper.getInstance(context).dbCardHelper.updateCard(this);
