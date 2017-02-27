@@ -17,6 +17,15 @@
         android:text="Card"
         android:textSize="36sp" />
 
+    <TextView
+        android:id="@+id/tv_card_romanji"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_card"
+        android:text="Card Romanji"
+        android:textSize="14sp"
+        android:layout_centerHorizontal="true"/>
+
     <View
         android:id="@+id/separator_card"
         android:layout_width="match_parent"
@@ -54,11 +63,11 @@
         android:id="@+id/lc_chart"></com.github.mikephil.charting.charts.LineChart>
 
     <Button
-        android:text="Play Sound"
+        android:text="@string/button_play_sound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btn_play_sound"
-        android:layout_below="@+id/tv_card"
+        android:layout_below="@+id/tv_card_romanji"
         android:layout_centerHorizontal="true"/>
 
 

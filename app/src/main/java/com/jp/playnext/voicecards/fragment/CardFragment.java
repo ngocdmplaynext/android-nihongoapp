@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.jp.playnext.voicecards.R;
 import com.jp.playnext.voicecards.model.Card;
+import com.jp.playnext.voicecards.utils.Utils;
 import com.musicg.wave.Wave;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +45,7 @@ public class CardFragment extends Fragment {
     OnDeckFragmentInteraction mListener;
 
     @BindView(R.id.tv_card) TextView tvCard;
+    @BindView(R.id.tv_card_romanji) TextView tvCardRomanji;
     @BindView(R.id.tv_best_percentage) TextView tvBestPercentage;
 
     @BindView(R.id.lc_chart) LineChart lcLineChart;
@@ -96,7 +99,16 @@ public class CardFragment extends Fragment {
         });
 
         if (card != null) {
+            String displaySentence = card.getDisplaySentence();
             tvCard.setText(card.getDisplaySentence());
+            if (Utils.isJapanese(card.getSentence())) {
+                String romanji = "";
+                tvCardRomanji.setVisibility(View.VISIBLE);
+                tvCardRomanji.setText(romanji);
+            }else {
+                tvCardRomanji.setVisibility(View.INVISIBLE);
+            }
+
             tvBestPercentage.setText(card.getBestScoreString());
         }
 
@@ -192,7 +204,7 @@ public class CardFragment extends Fragment {
 
     }
 
-    public Card getCard(){
+    public Card getCard() {
         return card;
     }
 

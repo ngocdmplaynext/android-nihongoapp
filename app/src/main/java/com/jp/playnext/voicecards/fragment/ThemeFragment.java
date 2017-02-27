@@ -60,14 +60,8 @@ public class ThemeFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-
-            //  if (deck.getCards().size() <= 1) {
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            /*
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, deck.getCards().size() ));
-            }
-*/
+
             recyclerView.setAdapter(new ThemeRecyclerVA(theme, mListener));
         }
         return view;

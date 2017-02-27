@@ -51,69 +51,6 @@ public class Card implements Parcelable {
 
 
 
-    /**
-     * @param
-     * @param
-     * @return SpannableString highlighting differences
-     */
-    /*
-    private SpannableString differenceDiffLib(String text, Color color) {
-        DiffMatchPatch diff = new DiffMatchPatch();
-
-        LinkedList<DiffMatchPatch.Diff> diffs = diff.diffMain(sentence.toLowerCase(), text.toLowerCase());
-        diff.diffCleanupEfficiency(diffs);
-
-        String newText = "";
-        for (Diff diff1 : diffs) {
-            if (diff1.operation != Operation.INSERT) //Comment to insert different text
-                newText += diff1.text;
-        }
-
-
-        SpannableString spannable = new SpannableString(newText);
-        int start = 0;
-
-        for (Diff diff1 : diffs) {
-            int end = start + diff1.text.length();
-
-            String backgroundColor = "#00000000";
-            switch (diff1.operation) {
-                case INSERT: //Do nothing
-
-                    // Uncomment to paint inserted text
-//                    backgroundColor = "#FF0000";
-//                    spannable.setSpan(
-//                            new BackgroundColorSpan(Color.parseColor(backgroundColor)),
-//                            start,
-//                            end,
-//                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                    break;
-
-                    continue;
-
-                case DELETE: //Paint red
-                    backgroundColor = "#FF0000";
-                    spannable.setSpan(
-                            new BackgroundColorSpan(Color.parseColor(backgroundColor)),
-                            start,
-                            end,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    break;
-
-                case EQUAL://Do nothing
-                    break;
-
-                default:
-                    break;
-            }
-
-
-            start = end;
-        }
-
-        return spannable;
-    }
-*/
     @Override
     public int describeContents() {
         return 0;

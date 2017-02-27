@@ -3,8 +3,8 @@
     <string-array name="deck_japanese">
         <item>日本語</item>
         <item>こんばんは</item>
-        <item>おはよう ございます</item>
-        <item>いい　天気 です　ね</item>
+        <item>おはようございます</item>
+        <item>いい天気ですね</item>
         <item>日本</item>
     </string-array>
     <string-array name="deck_english">

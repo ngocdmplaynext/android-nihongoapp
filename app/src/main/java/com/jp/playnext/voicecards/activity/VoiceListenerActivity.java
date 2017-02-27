@@ -21,6 +21,7 @@ import com.jp.playnext.voicecards.utils.Utils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -34,10 +35,18 @@ public abstract class VoiceListenerActivity extends AppCompatActivity {
     protected static final int VR_Request = 100;
     protected Locale myLanguage = Locale.JAPAN;
 
+    /**
+     * Listen to user
+     */
     public void onMic() {
         onMic("");
     }
 
+    /**
+     * Listen to user
+     *
+     * @param prompt text to be displayed
+     */
     public void onMic(String prompt) {
 
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -49,7 +58,7 @@ public abstract class VoiceListenerActivity extends AppCompatActivity {
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, prompt);
 
         // for getting audio file returned
-        //NOT WORKING
+        //Low quality file
         //intent.putExtra("android.speech.extra.GET_AUDIO_FORMAT", "audio/AMR");
         intent.putExtra("android.speech.extra.GET_AUDIO", true);
 
@@ -96,8 +105,19 @@ public abstract class VoiceListenerActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Receive result from speech and process it
+     *
+     * @param intent
+     */
     public abstract void processResults(Intent intent);
 
+    /**
+     * Process AMR file
+     *
+     * @param intent
+     * @return
+     */
     public File getAudio(Intent intent) {
 
 
@@ -157,10 +177,12 @@ public abstract class VoiceListenerActivity extends AppCompatActivity {
         String backgroundColor = "#FF0000";
         String textColor = "#FFFFFF";
 
+        int spaceBetweenWords = Utils.isJapanese(displaySentence) ? 0 : 1;
+
         int start = 0;
         int end = 0;
         for (final String s : sentenceArray) {
-            end = end + s.length();
+            end = start + s.length();
 
             if (!resultText.toLowerCase().contains(s.toLowerCase())) {
 
@@ -175,7 +197,7 @@ public abstract class VoiceListenerActivity extends AppCompatActivity {
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             }
-            start = end;
+            start = end + spaceBetweenWords;
         }
 
         return spannable;

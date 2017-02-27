@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 /**
  * Created by danielmorais on 2/20/17.
+ * This class holds a collection of decks
  */
 
 public class Theme implements Parcelable {
