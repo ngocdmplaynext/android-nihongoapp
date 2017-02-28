@@ -16,6 +16,10 @@ import com.jp.playnext.voicecards.model.Card;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Created by danielmorais on 2/24/17.
+ * Display results and highlight mistaken words
+ */
 public class ResultsActivity extends VoiceListenerActivity {
 
     public final static String TAG = ResultsActivity.class.getSimpleName();
@@ -36,6 +40,13 @@ public class ResultsActivity extends VoiceListenerActivity {
     @BindView(R.id.tv_received_sentence_result) TextView tvReceivedSentence;
     @BindView(R.id.tv_percentage_result) TextView tvPercentage;
 
+    /**
+     *
+     * @param context
+     * @param card
+     * @param resultSentence
+     * @param resultPercentage
+     */
     public static void newInstance(Context context, Card card, String resultSentence, float resultPercentage) {
         Intent intent = new Intent(context, ResultsActivity.class);
         intent.putExtra(ARGS_CARD, card);
@@ -64,6 +75,23 @@ public class ResultsActivity extends VoiceListenerActivity {
         //tvBestPercentage.setText(card.getBestScoreString());
     }
 
+    /**
+     * Voice recognition for mistaken word
+     * @param wordClicked
+     */
+    @Override
+    public void onClickWord(String wordClicked) {
+        Log.v(TAG, "Word:" + wordClicked);
+        prompt = wordClicked;
+        onMic(wordClicked);
+        //Listen for word
+
+    }
+
+    /**
+     * Displays confidence results of Voice recognition
+     * @param intent
+     */
     @Override
     public void processResults(Intent intent) {
         String word = prompt;
@@ -74,12 +102,4 @@ public class ResultsActivity extends VoiceListenerActivity {
 
     }
 
-    @Override
-    public void onClickWord(String wordClicked) {
-        Log.v(TAG, "Word:" + wordClicked);
-        prompt = wordClicked;
-        onMic(wordClicked);
-        //Listen for word
-
-    }
 }

@@ -15,9 +15,7 @@ import android.view.MenuItem;
 
 import com.jp.playnext.voicecards.R;
 import com.jp.playnext.voicecards.database.DBHelper;
-import com.jp.playnext.voicecards.database.DummyInsertData;
 import com.jp.playnext.voicecards.fragment.MainListFragment;
-import com.jp.playnext.voicecards.model.Deck;
 import com.jp.playnext.voicecards.model.Theme;
 
 import java.util.ArrayList;
@@ -126,10 +124,14 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Start ThemeActivity
+     * @param theme
+     */
     @Override
     public void onThemeClicked(Theme theme) {
-        //TODO Add deck lists to theme here
-        theme.loadCards(this);
+        //Load Decks associated to this theme
+        theme.loadDecks(this);
         ThemeActivity.newInstance(this, theme);
     }
 }

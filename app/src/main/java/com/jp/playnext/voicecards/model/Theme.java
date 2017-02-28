@@ -53,12 +53,12 @@ public class Theme implements Parcelable {
 
     //=======================DB====================================
 
-    public void reloadCards(Context context) {
+    public void reloadDecks(Context context) {
         alDeck = new ArrayList<>();
-        loadCards(context);
+        loadDecks(context);
     }
 
-    public void loadCards(Context context) {
+    public void loadDecks(Context context) {
         if (alDeck.size() == 0) {
             alDeck = DBHelper.getInstance(context).dbDeckHelper.getThemeDecks(sName);
         }

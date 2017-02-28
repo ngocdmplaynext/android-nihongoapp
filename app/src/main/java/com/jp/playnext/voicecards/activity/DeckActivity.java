@@ -56,6 +56,10 @@ public class DeckActivity extends AppCompatActivity
         tvDeckTitle.setText(deck.getName());
     }
 
+    /**
+     * Start Card activity
+     * @param card
+     */
     @Override
     public void onCardClicked(Card card){
         Log.v(TAG, "On click");

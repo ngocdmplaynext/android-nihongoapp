@@ -28,7 +28,10 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
+/**
+ * Created by danielmorais.
+ * Displays card, extends VoiceListenerActivity for Voice recognition
+ */
 public class CardActivity extends VoiceListenerActivity
         implements CardFragment.OnDeckFragmentInteraction {
 
@@ -120,6 +123,7 @@ public class CardActivity extends VoiceListenerActivity
 
     }
 
+
     public void InitTextToSpeech() {
         if (textToSpeech == null)
             textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -132,6 +136,10 @@ public class CardActivity extends VoiceListenerActivity
             });
     }
 
+    /**
+     * Change Language
+     * @param view
+     */
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
@@ -154,6 +162,10 @@ public class CardActivity extends VoiceListenerActivity
     }
 
 
+    /**
+     * Analyze results of voice recognition
+     * @param intent
+     */
     @Override
     public void processResults(Intent intent) {
 

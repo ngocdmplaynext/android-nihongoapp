@@ -26,6 +26,7 @@ import java.util.Locale;
 
 /**
  * Created by danielmorais on 2/24/17.
+ * Implements logic for Voice Recognition
  */
 
 public abstract class VoiceListenerActivity extends AppCompatActivity {
