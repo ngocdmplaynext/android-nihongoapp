@@ -7,39 +7,36 @@
         <item>いい 天気 です ね</item>
         <item>良い 一日 を</item>
         <item>おしゃべり 降りだ</item>
-
     </string-array>
+
     <string-array name="deck_english">
-        <item>red</item>
-        <item>Yellow</item>
-        <item>Green</item>
-        <item>White</item>
-        <item>Black</item>
-        <item>Blue</item>
+        <item>ライオン</item>
+        <item>ゼブラ</item>
+        <item>エレファント</item>
+        <item>ライノウイルス</item>
+        <item>チーター</item>
+        <item>ジャガー</item>
     </string-array>
 
     <string-array name="wild_animals">
-        <item>this is a lion</item>
-        <item>zebra</item>
-        <item>elephant</item>
-        <item>rhino</item>
-        <item>cheetah</item>
-        <item>jaguar</item>
+        <item>ドルフィン</item>
+        <item>ホエール</item>
+        <item>シーライオン</item>
+        <item>シャーク</item>
     </string-array>
 
     <string-array name="domestic_animals">
-        <item>dog</item>
-        <item>cat</item>
-        <item>hamster</item>
-        <item>birds</item>
-        <item>rabbit</item>
+        <item>犬</item>
+        <item>猫</item>
+        <item>ハムスター</item>
+        <item>鳥</item>
+        <item>うさぎ</item>
     </string-array>
 
     <string-array name="sea_animals">
-        <item>dolphin</item>
-        <item>whale</item>
-        <item>sea lion</item>
-        <item>shark</item>
-        <item>sea urchin</item>
+        <item>ドルフィン</item>
+        <item>ホエール</item>
+        <item>シーライオン</item>
+        <item>シャーク</item>
     </string-array>
 </resources>

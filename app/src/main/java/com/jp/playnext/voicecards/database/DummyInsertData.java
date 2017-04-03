@@ -21,10 +21,10 @@ public class DummyInsertData {
     public static void insertDummyData(Context context) {
         ArrayList<Theme> alThemes = new ArrayList<>();
         alThemes = new ArrayList<>();
-        Theme theme = new Theme("Language");
-        theme.addDeck(new Deck("English", theme.getName(),
+        Theme theme = new Theme("Aisatsu");
+        theme.addDeck(new Deck("Horensyuu", theme.getName(),
                 context.getResources().getStringArray(R.array.deck_english)));
-        theme.addDeck(new Deck("Japanese", theme.getName(),
+        theme.addDeck(new Deck("Aisatsu1", theme.getName(),
                 context.getResources().getStringArray(R.array.deck_japanese)));
         alThemes.add(theme);
 
@@ -87,11 +87,11 @@ public class DummyInsertData {
     public static void getThemeDecks(Context context) {
         ArrayList<Deck> alCards = new ArrayList<>();
 
-        alCards = DBHelper.getInstance(context).dbDeckHelper.getThemeDecks("Language");
-        Log.v(TAG, "============== DB LANGUAGE DECKS ===============");
+        alCards = DBHelper.getInstance(context).dbDeckHelper.getThemeDecks("Aisatsu");
+        Log.v(TAG, "============== DB Aisatsu DECKS ===============");
         for (Deck d : alCards) {
             Log.v(TAG, d.toString());
         }
-        Log.v(TAG, "============== END  DB LANGUAGE DECKS ===============");
+        Log.v(TAG, "============== END  DB Aisatsu DECKS ===============");
     }
 }

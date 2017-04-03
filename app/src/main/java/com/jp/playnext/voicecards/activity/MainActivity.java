@@ -1,5 +1,6 @@
 package com.jp.playnext.voicecards.activity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+import com.squareup.moshi.Types;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 import com.jp.playnext.voicecards.R;
 import com.jp.playnext.voicecards.database.DBHelper;
 import com.jp.playnext.voicecards.fragment.MainListFragment;
@@ -25,6 +44,11 @@ public class MainActivity extends AppCompatActivity
         MainListFragment.OnMainListFragmentInteraction {
 
     ArrayList<Theme> alThemes;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +79,55 @@ public class MainActivity extends AppCompatActivity
 
         initData();
 
+        setUserData();
+
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.fl_theme_list_fragment, MainListFragment.newInstance(alThemes))
                     .commit();
         }
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    private void setUserData() {
+        // Khởi tạo OkHttpClient để lấy dữ liệu.
+        OkHttpClient client = new OkHttpClient();
+        // Khởi tạo Moshi adapter để biến đổi json sang model java (ở đây là User)
+        Moshi moshi = new Moshi.Builder().build();
+        Type usersType = Types.newParameterizedType(List.class, User.class);
+        final JsonAdapter<List<User>> jsonAdapter = moshi.adapter(usersType);
+
+        // Tạo request lên server.
+        Request request = new Request.Builder()
+                .url("https://api.github.com/users")
+                .build();
+
+        // Thực thi request.
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("Error", "Network Error");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                // Lấy thông tin JSON trả về. Bạn có thể log lại biến json này để xem nó như thế nào.
+                String json = response.body().string();
+                final List<User> users = jsonAdapter.fromJson(json);
+
+                // Cho hiển thị lên RecyclerView.
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        rvUsers.setAdapter(new UserAdapter(users, MainActivity.this));
+                    }
+                });
+            }
+        });
     }
 
     private void initData() {
@@ -126,6 +193,7 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Start ThemeActivity
+     *
      * @param theme
      */
     @Override
@@ -133,5 +201,41 @@ public class MainActivity extends AppCompatActivity
         //Load Decks associated to this theme
         theme.loadDecks(this);
         ThemeActivity.newInstance(this, theme);
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client2.connect();
+        AppIndex.AppIndexApi.start(client2, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client2, getIndexApiAction());
+        client2.disconnect();
     }
 }
