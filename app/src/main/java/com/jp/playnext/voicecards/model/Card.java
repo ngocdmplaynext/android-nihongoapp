@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.jp.playnext.voicecards.utils.TouchableSpan;
 import com.jp.playnext.voicecards.utils.Utils;
 import com.jp.playnext.voicecards.database.DBHelper;
@@ -24,32 +26,57 @@ import com.jp.playnext.voicecards.database.DBHelper;
 
 public class Card implements Parcelable {
 
-    private static final String TAG = Card.class.getSimpleName() + "123";
-    private int id;
-    private String sentence;
-    private String title;
-    private String parentDeck;
-    private float bestScore;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("deck_id")
+    @Expose
+    private Integer deckId;
+    @SerializedName("best_score")
+    @Expose
+    private Integer bestScore;
 
-
-    public Card() {
-
+    public String getName() {
+        return name;
     }
 
-
-    public Card(String sentence, String parentDeck) {
-        this(sentence, sentence, parentDeck, -1, 0.0f);
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Card(String sentence, String title, String parentDeck, int id, float bestScore) {
-        this.sentence = sentence;
-        this.title = title;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
         this.id = id;
-        this.parentDeck = parentDeck;
     }
 
+    public Integer getDeckId() {
+        return deckId;
+    }
 
+    public void setDeckId(Integer deckId) {
+        this.deckId = deckId;
+    }
 
+    public Integer getBestScore() {
+        return bestScore;
+    }
+
+    public void setBestScore(Integer bestScore) {
+        this.bestScore = bestScore;
+    }
+
+    public String getDisplaySentence() {
+        if (Utils.isJapanese(name))
+            return name.replaceAll("\\s+", "");
+
+        return name;
+    }
 
     @Override
     public int describeContents() {
@@ -58,11 +85,17 @@ public class Card implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.sentence);
+        dest.writeString(this.name);
+        dest.writeInt(this.id);
+        dest.writeInt(this.deckId);
+        dest.writeInt(this.bestScore);
     }
 
     protected Card(Parcel in) {
-        this.sentence = in.readString();
+        this.name = in.readString();
+        this.id = in.readInt();
+        this.deckId = in.readInt();
+        this.bestScore = in.readInt();
     }
 
     public static final Parcelable.Creator<Card> CREATOR = new Parcelable.Creator<Card>() {
@@ -76,84 +109,4 @@ public class Card implements Parcelable {
             return new Card[size];
         }
     };
-
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Card))
-            return false;
-        Card otherCard = (Card) obj;
-
-        return TextUtils.equals(sentence, otherCard.getSentence());
-
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
-     * Remove spaces if a sentence is Japanese
-     *
-     * @return
-     */
-    public String getDisplaySentence() {
-        if (Utils.isJapanese(sentence))
-            return sentence.replaceAll("\\s+", "");
-
-        return sentence;
-    }
-
-    public String getSentence() {
-        return sentence;
-    }
-
-    public void setSentence(String sentence) {
-        this.sentence = sentence;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    @Override
-    public String toString() {
-        return "Card ID: " + id + ". Title:" + title + ". Sentence:" + sentence + ". Parent Deck:" + parentDeck;
-    }
-
-    public String getParentDeck() {
-        return parentDeck;
-    }
-
-    public void setParentDeck(String parentDeck) {
-        this.parentDeck = parentDeck;
-    }
-
-    public float getBestScore() {
-        return bestScore;
-    }
-
-    public String getBestScoreString() {
-        return String.format("%.2f", bestScore) + "%";
-    }
-
-
-    public void setBestScore(Context context, float bestScore) {
-        if (bestScore > this.bestScore) {
-            this.bestScore = bestScore;
-            if (id < -1)
-                DBHelper.getInstance(context).dbCardHelper.insertCard(this);
-            else
-                DBHelper.getInstance(context).dbCardHelper.updateCard(this);
-        }
-    }
-
 }

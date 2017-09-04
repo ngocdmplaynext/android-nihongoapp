@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -18,6 +19,9 @@ android {
         }
     }
 }
+
+def okhttp3_version = '3.3.1'
+def retrofit_version = '2.1.0'
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -28,6 +32,12 @@ dependencies {
 
 
     compile files('libs/musicg-1.4.2.0.jar')
+
+    compile "com.squareup.retrofit2:retrofit:${retrofit_version}"
+    compile "com.squareup.retrofit2:converter-gson:${retrofit_version}"
+    compile "com.squareup.okhttp3:okhttp:${okhttp3_version}"
+    compile "com.squareup.okhttp3:logging-interceptor:${okhttp3_version}"
+
     compile 'com.jakewharton:butterknife:8.5.1'
     compile 'org.bitbucket.cowwoc:diff-match-patch:1.1'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
@@ -35,11 +45,11 @@ dependencies {
     compile 'com.android.support:support-v4:25.1.1'
     compile 'com.android.support:recyclerview-v7:25.1.1'
     compile 'com.android.support:design:25.1.1'
-    testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.moshi:moshi:1.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }

@@ -17,7 +17,6 @@
         android:id="@+id/fl_theme_list_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_theme_list"
-        android:layout_below="@+id/tv_deck_title" />
+        tools:layout="@layout/fragment_theme_list" />
 
 </RelativeLayout>

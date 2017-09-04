@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jp.playnext.voicecards.activity.NewDeckActivity">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:background="@android:color/transparent"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/button_close" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Topic"
+        android:layout_below="@+id/button_close"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/tv_topic" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv_topic"
+        android:layout_alignBottom="@+id/tv_topic"
+        android:layout_toRightOf="@+id/tv_topic"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/et_title" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Record"
+        android:layout_below="@+id/et_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:id="@+id/btn_new_deck_record" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/btn_new_deck_record"
+        android:layout_alignStart="@+id/btn_new_deck_record"
+        android:id="@+id/btn_new_deck_register"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:layout_below="@+id/btn_new_deck_record"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/btn_new_deck_edit"/>
+
+    <FrameLayout
+        android:id="@+id/fl_new_deck_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/btn_new_deck_edit"
+        android:layout_above="@+id/btn_new_deck_register"
+        tools:layout="@layout/fragment_new_deck" />
+
+</RelativeLayout>

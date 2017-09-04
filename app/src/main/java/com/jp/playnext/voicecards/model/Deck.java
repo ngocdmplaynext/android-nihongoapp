@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.jp.playnext.voicecards.database.DBHelper;
 
 import java.util.ArrayList;
@@ -16,69 +18,38 @@ import java.util.ArrayList;
 
 public class Deck implements Parcelable {
 
-    private int id;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("theme_id")
+    @Expose
+    private Integer themeId;
 
-    private String sName;
-    private String sThemeName;
-
-
-    private ArrayList<Card> alCards;
-
-    public Deck() {
-
-        this(Deck.class.getName(), "NONE");
+    public String getName() {
+        return name;
     }
 
-    public Deck(String name, String sThemeName) {
-
-        this(name, sThemeName, new ArrayList<Card>());
+    public void setName(String name) {
+        this.name = name;
     }
 
-    //FOR TESTING PURPOSE ONLY
-    public Deck(String name, String sThemeName, String[] words) {
-        this.sName = name;
-        this.sThemeName = sThemeName;
-        alCards = new ArrayList<>();
-        for (String s : words)
-            alCards.add(new Card((s), name));
+    public Integer getId() {
+        return id;
     }
 
-
-    public Deck(String name, String sThemeName, ArrayList<Card> cards) {
-
-        this.sName = name;
-        this.alCards = cards;
-        this.sThemeName = sThemeName;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    //=================== ARRAY LIST=================================
-
-
-    public void addCard(Card card) {
-        getCards().add(card);
+    public Integer getThemeId() {
+        return themeId;
     }
 
-
-    public void removeCard(Card card) {
-        getCards().remove(card);
-    }
-
-
-    public Card get(int position) {
-        return alCards.get(position);
-    }
-
-    //=======================DB====================================
-
-    public void reloadCards(Context context) {
-        alCards = new ArrayList<>();
-        loadCards(context);
-    }
-
-    public void loadCards(Context context) {
-        if (alCards.size() == 0) {
-            alCards = DBHelper.getInstance(context).dbCardHelper.getDeckCards(sName);
-        }
+    public void setThemeId(Integer themeId) {
+        this.themeId = themeId;
     }
 
 
@@ -91,13 +62,15 @@ public class Deck implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.sName);
-        dest.writeTypedList(this.getCards());
+        dest.writeString(this.name);
+        dest.writeInt(this.id);
+        dest.writeInt(this.themeId);
     }
 
     protected Deck(Parcel in) {
-        this.sName = in.readString();
-        this.alCards = in.createTypedArrayList(Card.CREATOR);
+        this.name = in.readString();
+        this.id = in.readInt();
+        this.themeId = in.readInt();
     }
 
     public static final Parcelable.Creator<Deck> CREATOR = new Parcelable.Creator<Deck>() {
@@ -112,47 +85,8 @@ public class Deck implements Parcelable {
         }
     };
 
-    //===================GET/SETTERS=================================
-
-
-    public ArrayList<Card> getCards() {
-        return alCards;
-    }
-
-    public String getName() {
-        return sName;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String sName) {
-        this.sName = sName;
-    }
-
-    public ArrayList<Card> getAlCards() {
-        return alCards;
-    }
-
-    public void setAlCards(ArrayList<Card> alCards) {
-        this.alCards = alCards;
-    }
-
-    public String getsThemeName() {
-        return sThemeName;
-    }
-
-    public void setsThemeName(String sThemeName) {
-        this.sThemeName = sThemeName;
-    }
-
     @Override
     public String toString() {
-        return "Deck ID:"+id+". Name:"+sName+". Parent Theme:"+sThemeName;
+        return "Deck ID:"+id+". Name:"+name+". Parent Theme ID:"+themeId;
     }
 }

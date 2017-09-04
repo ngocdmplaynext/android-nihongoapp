@@ -97,31 +97,31 @@ public class DBThemeHelper {
     }
 
 
-    public ArrayList<Theme> getAllTheme() {
-        ArrayList<Theme> array_list = new ArrayList<Theme>();
+//    public ArrayList<Theme> getAllTheme() {
+//        ArrayList<Theme> array_list = new ArrayList<Theme>();
+//
+//        //hp = new HashMap();
+//        SQLiteDatabase db = DBHelper.getInstance(context).getReadableDatabase();
+//        Cursor cursor = db.rawQuery("select * from " + THEME_TABLE_NAME, null);
+//        return parseCursor(cursor);
+//    }
 
-        //hp = new HashMap();
-        SQLiteDatabase db = DBHelper.getInstance(context).getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from " + THEME_TABLE_NAME, null);
-        return parseCursor(cursor);
-    }
 
-
-    private ArrayList<Theme> parseCursor(Cursor cursor) {
-        ArrayList<Theme> array_list = new ArrayList<Theme>();
-
-        cursor.moveToFirst();
-
-        while (cursor.isAfterLast() == false) {
-            int id = cursor.getInt(cursor.getColumnIndex(THEME_COLUMN_ID));
-            String name = cursor.getString(cursor.getColumnIndex(THEME_COLUMN_NAME));
-            Theme theme = new Theme(name);
-            theme.setId(id);
-            array_list.add(theme);
-            cursor.moveToNext();
-        }
-
-        return array_list;
-
-    }
+//    private ArrayList<Theme> parseCursor(Cursor cursor) {
+//        ArrayList<Theme> array_list = new ArrayList<Theme>();
+//
+//        cursor.moveToFirst();
+//
+//        while (cursor.isAfterLast() == false) {
+//            int id = cursor.getInt(cursor.getColumnIndex(THEME_COLUMN_ID));
+//            String name = cursor.getString(cursor.getColumnIndex(THEME_COLUMN_NAME));
+//            Theme theme = new Theme();
+//            theme.setId(id);
+//            array_list.add(theme);
+//            cursor.moveToNext();
+//        }
+//
+//        return array_list;
+//
+//    }
 }

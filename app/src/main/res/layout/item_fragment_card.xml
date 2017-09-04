@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/container_score"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:id="@+id/btn_record_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:textAllCaps="false"
+            android:text="Record" />
+
+        <TextView
+            android:id="@+id/tv_cards_score"
+            android:text="100"
+            android:layout_below="@id/btn_record_card"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_cards_sentence"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@id/container_score"
+        android:text='"I know this is an"' />
+
+    <TextView
+        android:id="@+id/tv_cards_romaji"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_cards_sentence"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@id/container_score"
+        android:layout_alignLeft="@id/tv_cards_sentence"
+        android:layout_alignRight="@id/tv_cards_sentence"
+        android:text='"I know this is an old thread fh fs đá ds ds ds sdjfjsdfjsdjfkskjdhf"' />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignLeft="@id/tv_cards_sentence"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@id/tv_cards_romaji"/>
+
+</RelativeLayout>

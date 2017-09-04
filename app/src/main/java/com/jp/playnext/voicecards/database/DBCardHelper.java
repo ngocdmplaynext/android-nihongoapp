@@ -64,9 +64,9 @@ public class DBCardHelper {
         SQLiteDatabase db = DBHelper.getInstance(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         //contentValues.put(CARD_COLUMN_ID, card.getId());
-        contentValues.put(CARD_COLUMN_TITLE, card.getTitle());
-        contentValues.put(CARD_COLUMN_SENTENCE, card.getSentence());
-        contentValues.put(CARD_COLUMN_PARENT_DECK, card.getParentDeck());
+       // contentValues.put(CARD_COLUMN_TITLE, card.getTitle());
+       // contentValues.put(CARD_COLUMN_SENTENCE, card.getSentence());
+       // contentValues.put(CARD_COLUMN_PARENT_DECK, card.getParentDeck());
         contentValues.put(CARD_COLUMN_BEST_SCORE, card.getBestScore());
         db.insert(CARD_TABLE_NAME, null, contentValues);
         return true;
@@ -92,9 +92,9 @@ public class DBCardHelper {
         SQLiteDatabase db = DBHelper.getInstance(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(CARD_COLUMN_ID, card.getId());
-        contentValues.put(CARD_COLUMN_TITLE, card.getTitle());
-        contentValues.put(CARD_COLUMN_SENTENCE, card.getSentence());
-        contentValues.put(CARD_COLUMN_PARENT_DECK, card.getParentDeck());
+//        contentValues.put(CARD_COLUMN_TITLE, card.getTitle());
+//        contentValues.put(CARD_COLUMN_SENTENCE, card.getSentence());
+//        contentValues.put(CARD_COLUMN_PARENT_DECK, card.getParentDeck());
         contentValues.put(CARD_COLUMN_BEST_SCORE, card.getBestScore());
         db.update(CARD_TABLE_NAME, contentValues, "id = ? ", new String[]{String.valueOf(card.getId())});
         return true;
@@ -140,7 +140,7 @@ public class DBCardHelper {
             String title = cursor.getString(cursor.getColumnIndex(CARD_COLUMN_TITLE));
             String parentDeck = cursor.getString(cursor.getColumnIndex(CARD_COLUMN_PARENT_DECK));
             float bestScore = cursor.getFloat(cursor.getColumnIndex(CARD_COLUMN_BEST_SCORE));
-            array_list.add(new Card(sentence, title, parentDeck, id, bestScore));
+            //array_list.add(new Card());
             cursor.moveToNext();
         }
 

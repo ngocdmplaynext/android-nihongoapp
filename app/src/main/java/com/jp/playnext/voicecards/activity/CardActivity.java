@@ -175,7 +175,6 @@ public class CardActivity extends VoiceListenerActivity
         float[] confidence = intent.getFloatArrayExtra(
                 RecognizerIntent.EXTRA_CONFIDENCE_SCORES);
 
-
         resultsPopUp.setVisibility(View.VISIBLE);
         tvPercentage.setText(Utils.confidentToString(confidence[0]));
 
@@ -190,7 +189,6 @@ public class CardActivity extends VoiceListenerActivity
         });
 
         mPagerAdapter.getCurrentFragment().displayResult(result, confidence, "");
-
 
     }
 
@@ -233,16 +231,16 @@ public class CardActivity extends VoiceListenerActivity
 
         @Override
         public Fragment getItem(int position) {
-            return new CardFragment().newInstance(deck.getCards().get(position));
+            return new CardFragment();
         }
 
         @Override
         public int getCount() {
-            return deck.getCards().size();
+            return 1;
         }
 
         public int getItemPosition(Card card) {
-            int index = deck.getCards().indexOf(card);
+            int index = 1;
             if (index >= 0)
                 return index;
 

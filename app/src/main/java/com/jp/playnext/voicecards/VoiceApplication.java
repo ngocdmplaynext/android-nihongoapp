@@ -33,17 +33,17 @@ public class VoiceApplication extends Application {
         DBHelper.getInstance(getApplicationContext());
 
 
-        if (!prefs.getBoolean(DUMMY_DATA_INSERT, false)) {
-            DummyInsertData.insertDummyData(this);
-            prefs.edit().putBoolean(DUMMY_DATA_INSERT, true).commit();
-            Log.v(TAG, "=============Dummy Data added============");
-        }
-
-
-        DummyInsertData.getAllCards(this);
-        DummyInsertData.getDeckCards(this);
-        DummyInsertData.getAllDecks(this);
-        DummyInsertData.getThemeDecks(this);
+//        if (!prefs.getBoolean(DUMMY_DATA_INSERT, false)) {
+//            DummyInsertData.insertDummyData(this);
+//            prefs.edit().putBoolean(DUMMY_DATA_INSERT, true).commit();
+//            Log.v(TAG, "=============Dummy Data added============");
+//        }
+//
+//
+//        DummyInsertData.getAllCards(this);
+//        DummyInsertData.getDeckCards(this);
+//        DummyInsertData.getAllDecks(this);
+//        DummyInsertData.getThemeDecks(this);
     }
 
 

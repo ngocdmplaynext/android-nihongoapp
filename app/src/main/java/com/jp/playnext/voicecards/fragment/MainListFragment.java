@@ -15,6 +15,7 @@ import com.jp.playnext.voicecards.model.Deck;
 import com.jp.playnext.voicecards.model.Theme;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by danielmorais on 2/21/17.
@@ -26,6 +27,7 @@ public class MainListFragment extends Fragment {
 
     private ArrayList<Theme> alThemes;
     private MainListFragment.OnMainListFragmentInteraction mListener;
+    private MainThemeListRecyclerVA adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -57,10 +59,11 @@ public class MainListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_deck_list, container, false);
-
+        adapter = new MainThemeListRecyclerVA(new ArrayList<Theme>(), mListener);
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
+
             RecyclerView recyclerView = (RecyclerView) view;
 
             //  if (deck.getCards().size() <= 1) {
@@ -70,7 +73,7 @@ public class MainListFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, deck.getCards().size() ));
             }
 */
-            recyclerView.setAdapter(new MainThemeListRecyclerVA(alThemes, mListener));
+            recyclerView.setAdapter(adapter);
         }
         return view;
     }
@@ -91,6 +94,10 @@ public class MainListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void updateListView(ArrayList<Theme> alThemes) {
+        adapter.addAllData(alThemes);
     }
 
     /**

@@ -61,7 +61,7 @@ public class DBDeckHelper {
         SQLiteDatabase db = DBHelper.getInstance(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(DECK_COLUMN_NAME, deck.getName());
-        contentValues.put(DECK_COLUMN_THEME_NAME, deck.getsThemeName());
+       // contentValues.put(DECK_COLUMN_THEME_NAME, deck.getsThemeName());
 
         db.insert(DECK_TABLE_NAME, null, contentValues);
         return true;
@@ -88,7 +88,7 @@ public class DBDeckHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DECK_COLUMN_ID, deck.getId());
         contentValues.put(DECK_COLUMN_NAME, deck.getName());
-        contentValues.put(DECK_COLUMN_THEME_NAME, deck.getsThemeName());
+      //  contentValues.put(DECK_COLUMN_THEME_NAME, deck.getsThemeName());
         db.update(DECK_TABLE_NAME, contentValues, "id = ? ", new String[]{String.valueOf(deck.getId())});
         return true;
     }
@@ -132,9 +132,9 @@ public class DBDeckHelper {
             int id = cursor.getInt(cursor.getColumnIndex(DECK_COLUMN_ID));
             String name = cursor.getString(cursor.getColumnIndex(DECK_COLUMN_NAME));
             String themeName = cursor.getString(cursor.getColumnIndex(DECK_COLUMN_THEME_NAME));
-            Deck deck = new Deck(name, themeName);
-            deck.setId(id);
-            array_list.add(deck);
+           // Deck deck = new Deck(name, themeName);
+//            deck.setId(id);
+//            array_list.add(deck);
             cursor.moveToNext();
         }
 

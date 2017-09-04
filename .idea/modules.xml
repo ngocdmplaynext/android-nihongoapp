@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/VoiceCards.iml" filepath="$PROJECT_DIR$/VoiceCards.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/voice-cards-android.iml" filepath="$PROJECT_DIR$/voice-cards-android.iml" />
     </modules>
   </component>
 </project>

@@ -62,6 +62,11 @@ public class MainThemeListRecyclerVA extends RecyclerView.Adapter<MainThemeListR
         return alThemes.size();
     }
 
+    public void addAllData(ArrayList<Theme> alThemes) {
+        this.alThemes = alThemes;
+        this.notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         @BindView(R.id.tv_theme_title)

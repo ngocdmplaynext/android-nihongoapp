@@ -21,5 +21,4 @@
         android:text='"text"'
         android:layout_gravity="center" />
 
-
 </LinearLayout>

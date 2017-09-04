@@ -88,6 +88,7 @@ public class ResultsActivity extends VoiceListenerActivity {
 
     }
 
+
     /**
      * Displays confidence results of Voice recognition
      * @param intent
@@ -103,3 +104,4 @@ public class ResultsActivity extends VoiceListenerActivity {
     }
 
 }
+

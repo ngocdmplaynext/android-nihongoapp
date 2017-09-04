@@ -101,7 +101,7 @@ public class CardFragment extends Fragment {
         if (card != null) {
             String displaySentence = card.getDisplaySentence();
             tvCard.setText(card.getDisplaySentence());
-            if (Utils.isJapanese(card.getSentence())) {
+            if (Utils.isJapanese(card.getName())) {
                 String romanji = "";
                 tvCardRomanji.setVisibility(View.VISIBLE);
                 tvCardRomanji.setText(romanji);
@@ -109,7 +109,7 @@ public class CardFragment extends Fragment {
                 tvCardRomanji.setVisibility(View.INVISIBLE);
             }
 
-            tvBestPercentage.setText(card.getBestScoreString());
+            tvBestPercentage.setText(card.getBestScore());
         }
 
         return rootView;
@@ -167,8 +167,8 @@ public class CardFragment extends Fragment {
      */
     public void displayResult(ArrayList<String> result, float[] confidence, String filePath) {
 
-        card.setBestScore(this.getContext(), confidence[0] * 100);
-        tvBestPercentage.setText(card.getBestScoreString());
+        card.setBestScore(Math.round(confidence[0] * 100));
+        tvBestPercentage.setText(card.getBestScore().toString());
 
         audioWave(filePath);
 
@@ -215,3 +215,6 @@ public class CardFragment extends Fragment {
 
 
 }
+/*
+
+ */

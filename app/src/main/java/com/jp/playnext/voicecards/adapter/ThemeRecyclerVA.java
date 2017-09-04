@@ -39,31 +39,29 @@ public class ThemeRecyclerVA extends RecyclerView.Adapter<ThemeRecyclerVA.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mDeck = theme.get(position);
-        holder.mSentenceView.setText(theme.get(position).getName());
-
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onDeckClicked(holder.mDeck);
-                }
-            }
-        });
+//        holder.mSentenceView.setText(theme.get(position).getName());
+//
+//        holder.mView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (null != mListener) {
+//                    // Notify the active callbacks interface (the activity, if the
+//                    // fragment is attached to one) that an item has been selected.
+//                    mListener.onDeckClicked(holder.mDeck);
+//                }
+//            }
+//        });
     }
 
     @Override
     public int getItemCount() {
-        return theme.getDeck().size();
+        return 1;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         @BindView(R.id.tv_sentence)
         public TextView mSentenceView;
-        public Deck mDeck;
 
         public ViewHolder(View view) {
             super(view);

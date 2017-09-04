@@ -3,6 +3,8 @@ package com.jp.playnext.voicecards.utils;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.jp.playnext.voicecards.model.Card;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;

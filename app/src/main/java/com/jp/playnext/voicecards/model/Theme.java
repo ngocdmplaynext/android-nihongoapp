@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.jp.playnext.voicecards.database.DBHelper;
 
 import java.util.ArrayList;
@@ -15,53 +17,27 @@ import java.util.ArrayList;
 
 public class Theme implements Parcelable {
 
-    private int id;
-    private String sName;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
 
-    private ArrayList<Deck> alDeck;
-
-    public Theme (){
-
-        this(Deck.class.getName());
+    public String getName() {
+        return name;
     }
 
-    public Theme (String name){
-
-        this(name, new ArrayList<Deck>());
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Theme (String name, ArrayList<Deck> decks){
-
-        this.sName = name;
-        this.alDeck = decks;
+    public Integer getId() {
+        return id;
     }
 
-    //===================ARRAY LIST=================================
-
-
-    public void addDeck(Deck deck){
-        alDeck.add(deck);
-    }
-
-    public void removeDeck(Deck deck){
-        alDeck.remove(deck);
-    }
-
-    public Deck get(int position){
-        return alDeck.get(position);
-    }
-
-    //=======================DB====================================
-
-    public void reloadDecks(Context context) {
-        alDeck = new ArrayList<>();
-        loadDecks(context);
-    }
-
-    public void loadDecks(Context context) {
-        if (alDeck.size() == 0) {
-            alDeck = DBHelper.getInstance(context).dbDeckHelper.getThemeDecks(sName);
-        }
+    public void setId(Integer id) {
+        this.id = id;
     }
 
 
@@ -74,13 +50,13 @@ public class Theme implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.sName);
-        dest.writeTypedList(this.alDeck);
+        dest.writeString(this.name);
+        dest.writeInt(this.id);
     }
 
     protected Theme(Parcel in) {
-        this.sName = in.readString();
-        this.alDeck = in.createTypedArrayList(Deck.CREATOR);
+        this.name = in.readString();
+        this.id = in.readInt();
     }
 
     public static final Parcelable.Creator<Theme> CREATOR = new Parcelable.Creator<Theme>() {
@@ -94,21 +70,4 @@ public class Theme implements Parcelable {
             return new Theme[size];
         }
     };
-    //===================GET/SET=================================
-
-    public ArrayList<Deck> getDeck() {
-        return alDeck;
-    }
-
-    public String getName() {
-        return sName;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 }

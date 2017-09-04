@@ -21,7 +21,6 @@ import com.jp.playnext.voicecards.utils.Utils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -60,7 +59,7 @@ public abstract class VoiceListenerActivity extends AppCompatActivity {
 
         // for getting audio file returned
         //Low quality file
-        //intent.putExtra("android.speech.extra.GET_AUDIO_FORMAT", "audio/AMR");
+        intent.putExtra("android.speech.extra.GET_AUDIO_FORMAT", "audio/AMR");
         intent.putExtra("android.speech.extra.GET_AUDIO", true);
 
 
@@ -119,8 +118,7 @@ public abstract class VoiceListenerActivity extends AppCompatActivity {
      * @param intent
      * @return
      */
-    public File getAudio(Intent intent) {
-
+    public File getAudio(Intent intent, Integer number) {
 
         //Code to get audio
         Uri audioUri = intent.getData();
@@ -132,7 +130,7 @@ public abstract class VoiceListenerActivity extends AppCompatActivity {
 
                 File sdcard = Environment.getExternalStorageDirectory();
                 File storagePath = new File(sdcard.getAbsolutePath() + "/Music");
-                File audioFile = new File(storagePath + "/" + "test" + ".wav");
+                File audioFile = new File(storagePath + "/" + "recording" + number.toString() + ".wav");
                 if (Utils.saveAudio(filestream, audioFile))
                     toastString = "Saved file to location:" + audioFile.getAbsolutePath();
 
@@ -168,7 +166,7 @@ public abstract class VoiceListenerActivity extends AppCompatActivity {
      * @return
      */
     public SpannableString difference(Card card, String resultText) {
-        return differenceTest(card.getSentence(), card.getDisplaySentence(), resultText);
+        return differenceTest(card.getName(), card.getDisplaySentence(), resultText);
     }
 
     private SpannableString differenceTest(String sentence, String displaySentence, String resultText) {
