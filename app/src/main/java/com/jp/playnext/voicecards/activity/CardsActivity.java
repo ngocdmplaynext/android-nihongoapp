@@ -47,6 +47,7 @@ implements  CardListFragment.OnCardListFragmentInteraction, AudioPlayList.OnAudi
     ArrayList<String> audioUrls = new ArrayList<String>();
     Card selectedCard;
     MediaPlayer mediaPlayer;
+    AudioPlayList playList;
 
     private static int counter = 0;
 
@@ -87,6 +88,7 @@ implements  CardListFragment.OnCardListFragmentInteraction, AudioPlayList.OnAudi
         progressBar.setVisibility(View.INVISIBLE);
         resultsPopUp.setVisibility(View.INVISIBLE);
         final Context context = this;
+        playList = new AudioPlayList(context);
         final Card card = selectedCard;
 
         //TODO: DELETE, TEST PURPOSE ONLY
@@ -113,13 +115,13 @@ implements  CardListFragment.OnCardListFragmentInteraction, AudioPlayList.OnAudi
                     String filePath = getExternalFilesDir(null) + File.separator + "card" + card.getId().toString() + ".acc";
                     audioUrls.add(filePath);
                 }
-                AudioPlayList instance = AudioPlayList.getInstance(context, audioUrls);
-                boolean isPlaying = instance.isPlaying();
+                playList.setPaths(audioUrls);
+                boolean isPlaying = playList.isPlaying();
                 if (isPlaying) {
-                    instance.stop();
+                    playList.stop();
                     btnPlayAll.setText("Play");
                 } else {
-                    instance.play();
+                    playList.play();
                     btnPlayAll.setText("Stop");
                 }
             }
@@ -321,8 +323,19 @@ implements  CardListFragment.OnCardListFragmentInteraction, AudioPlayList.OnAudi
 
     @Override
     public void onPause() {
-
+        if (playList != null && playList.isPlaying()) {
+            playList.stop();
+            btnPlayAll.setText("Play");
+        }
         super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        if (playList != null && playList.isPlaying()) {
+            playList.stop();
+        }
+        super.onStop();
     }
 
     @Override

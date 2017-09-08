@@ -18,7 +18,7 @@
     <EditText
         android:id="@+id/et_register_name"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/tv_register_name"
         android:layout_alignBaseline="@+id/tv_register_name"
         android:layout_marginLeft="70dp"/>
@@ -36,7 +36,7 @@
     <EditText
         android:id="@+id/et_register_email"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/tv_register_name"
         android:layout_alignBaseline="@+id/tv_register_email"
         android:layout_marginLeft="70dp"/>
@@ -54,7 +54,8 @@
     <EditText
         android:id="@+id/et_register_password"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:inputType="textPassword"
+        android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/tv_register_name"
         android:layout_alignBaseline="@+id/tv_register_password"
         android:layout_marginLeft="70dp"/>
@@ -72,7 +73,8 @@
     <EditText
         android:id="@+id/et_register_password_confirm"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
         android:layout_toRightOf="@+id/tv_register_name"
         android:layout_alignBaseline="@+id/tv_register_password_confirm"
         android:layout_marginLeft="70dp"/>

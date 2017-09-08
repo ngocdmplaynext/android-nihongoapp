@@ -17,38 +17,41 @@ import java.util.ArrayList;
 public class AudioPlayList {
     private static AudioPlayList sInstance;
     private ArrayList<String> paths;
+    private Boolean isPlaying = false;
     OnAudioPlayListInteraction mListener;
 
     private MediaPlayer currentMedia;
 
-    public static synchronized AudioPlayList getInstance(Context context, ArrayList<String> paths) {
+    public static synchronized AudioPlayList getInstance(Context context) {
         if (sInstance == null) {
-            sInstance = new AudioPlayList(context, paths);
+            sInstance = new AudioPlayList(context);
         }
         return sInstance;
     }
 
-    public AudioPlayList(Context context, ArrayList<String> paths) {
-        this.paths = paths;
+    public AudioPlayList(Context context) {
         if (context instanceof  OnAudioPlayListInteraction) {
             this.mListener = (OnAudioPlayListInteraction) context;
         }
     }
 
+    public void setPaths(ArrayList<String> paths) {
+        this.paths = paths;
+    }
+
     public void play() {
+        isPlaying = true;
         play(0, paths.size() - 1);
         Integer size = paths.size();
         Log.v("aaa", size.toString());
     }
 
     public boolean isPlaying() {
-        if (currentMedia != null) {
-            return currentMedia.isPlaying();
-        }
-        return false;
+        return isPlaying;
     }
 
     public void stop() {
+        isPlaying = false;
         if (currentMedia != null) {
             currentMedia.stop();
         }
@@ -64,7 +67,7 @@ public class AudioPlayList {
             public void onCompletion(MediaPlayer mp)
             {
                 // Code to start the next audio in the sequence
-                if (position < limit) {
+                if (position < limit && isPlaying) {
                     play(position + 1, limit);
                 }
 

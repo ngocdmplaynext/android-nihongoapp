@@ -1,5 +1,8 @@
 package com.jp.playnext.voicecards.activity;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -23,6 +27,8 @@ import com.jp.playnext.voicecards.fragment.MainListFragment;
 import com.jp.playnext.voicecards.model.InterfaceFactory;
 import com.jp.playnext.voicecards.model.Theme;
 import com.jp.playnext.voicecards.model.ThemeInterface;
+import com.jp.playnext.voicecards.model.UserDefaultImpl;
+import com.jp.playnext.voicecards.utils.FileUtils;
 
 import java.util.ArrayList;
 
@@ -189,23 +195,44 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        final Context context = this;
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_logout) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage("ログアウトしてもよろしいですか");
+            builder.setCancelable(true);
 
-        } else if (id == R.id.nav_slideshow) {
+            builder.setPositiveButton(
+                    "はい",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            final UserDefaultImpl userDefault = new UserDefaultImpl(context);
+                            userDefault.resetToken();
+                            FileUtils.cleanDocumentsDirectory("card", context);
+                            Intent intent = new Intent(context, LoginActivity.class);
+                            startActivity(intent);
+                            dialog.cancel();
+                        }
+                    });
 
-        } else if (id == R.id.nav_manage) {
+            builder.setNegativeButton(
+                    "いいえ",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
 
-        } else if (id == R.id.nav_share) {
+            AlertDialog alert = builder.create();
+            alert.show();
+        } else if (id == R.id.nav_home) {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        } else if (id == R.id.nav_teacher) {
 
-        } else if (id == R.id.nav_send) {
-
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
