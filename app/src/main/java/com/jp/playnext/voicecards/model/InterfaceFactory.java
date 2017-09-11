@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class InterfaceFactory {
-    static String baseUrl = "http://172.16.96.61:3000";
+    static String baseUrl = "http://172.16.96.20:3000";
     public static <T> T createRetrofitService(final Class<T> clazz) {
         final Retrofit restAdapter = new Retrofit.Builder()
                 .baseUrl(baseUrl)

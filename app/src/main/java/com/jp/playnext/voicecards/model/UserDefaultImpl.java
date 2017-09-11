@@ -68,4 +68,8 @@ public class UserDefaultImpl implements UserDefault {
         mPreferences.removeValue(KEY_USER_NAME);
         mPreferences.removeValue(KEY_USER_TYPE);
     }
+
+    public boolean isTeacher() {
+        return getUserType() == 2;
+    }
 }

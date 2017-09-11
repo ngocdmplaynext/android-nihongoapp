@@ -5,9 +5,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,9 +27,12 @@ import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.jp.playnext.voicecards.R;
 import com.jp.playnext.voicecards.fragment.MainListFragment;
+import com.jp.playnext.voicecards.fragment.TeachersFragment;
 import com.jp.playnext.voicecards.model.InterfaceFactory;
 import com.jp.playnext.voicecards.model.Theme;
 import com.jp.playnext.voicecards.model.ThemeInterface;
+import com.jp.playnext.voicecards.model.User;
+import com.jp.playnext.voicecards.model.UserDefault;
 import com.jp.playnext.voicecards.model.UserDefaultImpl;
 import com.jp.playnext.voicecards.utils.FileUtils;
 
@@ -39,14 +45,22 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        MainListFragment.OnMainListFragmentInteraction {
-
-    ArrayList<Theme> alThemes;
+        implements MainListFragment.OnMainListFragmentInteraction,
+TeachersFragment.OnTeacherFragmentInteraction {
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
+    private static final String TAG_THEME = "theme";
+    private static final String TAG_TEACHERS = "teachers";
+    public static String CURRENT_TAG = TAG_THEME;
+
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+    private Handler mHandler;
+
+    public static int navItemIndex = 1;
+
     private GoogleApiClient client2;
 
     @Override
@@ -57,6 +71,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mHandler = new Handler();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,96 +82,30 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+        UserDefault userDefault = new UserDefaultImpl(this);
+        if (userDefault.isTeacher()) {
+            menu.findItem(R.id.nav_teacher).setVisible(false);
+        }
 
-        initData();
-
-//        setUserData();
-
-        getThemeData();
+        setUpNavigationView();
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fl_theme_list_fragment, MainListFragment.newInstance(alThemes), MainListFragment.class.getName())
-                    .commit();
+            navItemIndex = 1;
+            CURRENT_TAG = TAG_THEME;
+            loadHomeFragment();
         }
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-    }
-
-//    private void setUserData() {
-//        // Khởi tạo OkHttpClient để lấy dữ liệu.
-//        OkHttpClient client = new OkHttpClient();
-//        // Khởi tạo Moshi adapter để biến đổi json sang model java (ở đây là User)
-//        Moshi moshi = new Moshi.Builder().build();
-//        Type usersType = Types.newParameterizedType(List.class, User.class);
-//        final JsonAdapter<List<User>> jsonAdapter = moshi.adapter(usersType);
-//
-//        // Tạo request lên server.
-//        Request request = new Request.Builder()
-//                .url("https://api.github.com/users")
-//                .build();
-//
-//        // Thực thi request.
-//        client.newCall(request).enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                Log.e("Error", "Network Error");
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//
-//                // Lấy thông tin JSON trả về. Bạn có thể log lại biến json này để xem nó như thế nào.
-//                String json = response.body().string();
-//                final List<User> users = jsonAdapter.fromJson(json);
-//
-//                // Cho hiển thị lên RecyclerView.
-////                runOnUiThread(new Runnable() {
-////                    @Override
-////                    public void run() {
-////                        rvUsers.setAdapter(new UserAdapter(users, MainActivity.this));
-////                    }
-////                });
-//            }
-//        });
-//    }
-
-    private  void getThemeData() {
-        ThemeInterface themeInterface = InterfaceFactory.createRetrofitService(ThemeInterface.class);
-        Call<ArrayList<Theme>> callTheme = themeInterface.getTheme();
-        callTheme.enqueue(new Callback<ArrayList<Theme>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Theme>> call, Response<ArrayList<Theme>> response) {
-                alThemes = response.body();
-                updateData(alThemes);
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Theme>> call, Throwable t) {
-
-            }
-        });
-    }
-
-    private void updateData(ArrayList<Theme> alThemes) {
-        MainListFragment mainListFragment = (MainListFragment) getSupportFragmentManager().findFragmentByTag(MainListFragment.class.getName());
-        mainListFragment.updateListView(alThemes);
-    }
-
-    private void initData() {
-        alThemes = new ArrayList<Theme>();
-      //  alThemes = DBHelper.getInstance(this).dbThemeHelper.getAllTheme();
     }
 
     @Override
@@ -190,50 +140,178 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+//    @SuppressWarnings("StatementWithEmptyBody")
+//    @Override
+//    public boolean onNavigationItemSelected(MenuItem item) {
+//        // Handle navigation view item clicks here.
+//        int id = item.getItemId();
+//        final Context context = this;
+//
+//        if (id == R.id.nav_logout) {
+//            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//            builder.setMessage("ログアウトしてもよろしいですか");
+//            builder.setCancelable(true);
+//
+//            builder.setPositiveButton(
+//                    "はい",
+//                    new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int id) {
+//                            final UserDefaultImpl userDefault = new UserDefaultImpl(context);
+//                            userDefault.resetToken();
+//                            FileUtils.cleanDocumentsDirectory("card", context);
+//                            Intent intent = new Intent(context, LoginActivity.class);
+//                            startActivity(intent);
+//                            dialog.cancel();
+//                        }
+//                    });
+//
+//            builder.setNegativeButton(
+//                    "いいえ",
+//                    new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int id) {
+//                            dialog.cancel();
+//                        }
+//                    });
+//
+//            AlertDialog alert = builder.create();
+//            alert.show();
+//        } else if (id == R.id.nav_home) {
+//            navItemIndex = 0;
+//            CURRENT_TAG = TAG_THEME;
+//        } else if (id == R.id.nav_teacher) {
+//            navItemIndex = 1;
+//            CURRENT_TAG = TAG_TEACHERS;
+//        }
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        drawer.closeDrawer(GravityCompat.START);
+//        return true;
+//    }
+
+    private void loadHomeFragment() {
+        // if user select the current navigation menu again, don't do anything
+        // just close the navigation drawer
+        if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
+            drawer.closeDrawers();
+            return;
+        }
+
+        // Sometimes, when fragment has huge data, screen seems hanging
+        // when switching between navigation menus
+        // So using runnable, the fragment is loaded with cross fade effect
+        // This effect can be seen in GMail app
+        Runnable mPendingRunnable = new Runnable() {
+            @Override
+            public void run() {
+                // update the main content by replacing fragments
+                Fragment fragment = getHomeFragment();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                        android.R.anim.fade_out);
+                fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
+                fragmentTransaction.commitAllowingStateLoss();
+            }
+        };
+
+        // If mPendingRunnable is not null, then add to the message queue
+        if (mPendingRunnable != null) {
+            mHandler.post(mPendingRunnable);
+        }
+
+        //Closing drawer on item click
+        drawer.closeDrawers();
+    }
+
+    private Fragment getHomeFragment() {
+        selectNavMenu();
+        switch (navItemIndex) {
+            case 1:
+                // home
+                MainListFragment themeFragment = new MainListFragment();
+                return themeFragment;
+            case 2:
+                // photos
+                TeachersFragment teachersFragment = new TeachersFragment();
+                return teachersFragment;
+            default:
+                return new MainListFragment();
+        }
+    }
+
+    private void setUpNavigationView() {
+        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         final Context context = this;
 
-        if (id == R.id.nav_logout) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("ログアウトしてもよろしいですか");
-            builder.setCancelable(true);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
-            builder.setPositiveButton(
-                    "はい",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            final UserDefaultImpl userDefault = new UserDefaultImpl(context);
-                            userDefault.resetToken();
-                            FileUtils.cleanDocumentsDirectory("card", context);
-                            Intent intent = new Intent(context, LoginActivity.class);
-                            startActivity(intent);
-                            dialog.cancel();
-                        }
-                    });
+            // This method will trigger on item Click of navigation menu
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                //Check to see which item was being clicked and perform appropriate action
 
-            builder.setNegativeButton(
-                    "いいえ",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
+                switch (menuItem.getItemId()) {
+                    //Replacing the main content with ContentFragment Which is our Inbox View;
+                    case R.id.nav_logout:
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setMessage("ログアウトしてもよろしいですか");
+                        builder.setCancelable(true);
 
-            AlertDialog alert = builder.create();
-            alert.show();
-        } else if (id == R.id.nav_home) {
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-        } else if (id == R.id.nav_teacher) {
+                        builder.setPositiveButton(
+                                "はい",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        final UserDefaultImpl userDefault = new UserDefaultImpl(context);
+                                        userDefault.resetToken();
+                                        FileUtils.cleanDocumentsDirectory("card", context);
+                                        Intent intent = new Intent(context, LoginActivity.class);
+                                        startActivity(intent);
+                                        dialog.cancel();
+                                    }
+                                });
 
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-        }
-        return true;
+                        builder.setNegativeButton(
+                                "いいえ",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                        return false;
+                    case R.id.nav_home:
+                        navItemIndex = 1;
+                        CURRENT_TAG = TAG_THEME;
+                        loadHomeFragment();
+                        break;
+                    case R.id.nav_teacher:
+                        navItemIndex = 2;
+                        CURRENT_TAG = TAG_TEACHERS;
+                        loadHomeFragment();
+                        break;
+                    default:
+                        navItemIndex = 1;
+                }
+
+                //Checking if the item is in checked state or not, if not make it in checked state
+//                if (menuItem.getItemId() != R.id.nav_logout) {
+//                    if (menuItem.isChecked()) {
+//                        menuItem.setChecked(false);
+//                    } else {
+//                        menuItem.setChecked(true);
+//                    }
+//                    menuItem.setChecked(true);
+//                } else {
+//                    menuItem.setChecked(false);
+//                }
+
+                return true;
+            }
+        });
+    }
+
+    private void selectNavMenu() {
+        navigationView.getMenu().getItem(navItemIndex).setChecked(true);
     }
 
     /**
@@ -246,6 +324,11 @@ public class MainActivity extends AppCompatActivity
         //Load Decks associated to this theme
       //  theme.loadDecks(this);
         DeckActivity.newInstance(this, theme);
+    }
+
+    @Override
+    public void onBtnTouch(User user) {
+
     }
 
     /**

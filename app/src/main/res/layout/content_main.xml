@@ -14,9 +14,9 @@
     tools:showIn="@layout/app_bar_main">
 
     <FrameLayout
-        android:id="@+id/fl_theme_list_fragment"
+        android:id="@+id/frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_theme_list" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </RelativeLayout>

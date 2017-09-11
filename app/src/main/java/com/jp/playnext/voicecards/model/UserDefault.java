@@ -19,4 +19,6 @@ public interface UserDefault {
 
     void resetUserInfo();
 
+    boolean isTeacher();
+
 }

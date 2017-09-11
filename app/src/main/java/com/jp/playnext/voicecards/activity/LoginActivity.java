@@ -65,8 +65,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             UserLogin userLogin = response.body();
                             userDefault.setToken(userLogin.getAuthToken());
-                            userDefault.setUsername(userDefault.getUsername());
-                            userDefault.setUserType(userDefault.getUserType());
+                            userDefault.setUsername(userLogin.getName());
+                            userDefault.setUserType(userLogin.getType());
 
                             Intent intent = new Intent(context, MainActivity.class);
                             context.startActivity(intent);

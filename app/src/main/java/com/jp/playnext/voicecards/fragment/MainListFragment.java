@@ -12,10 +12,16 @@ import android.view.ViewGroup;
 import com.jp.playnext.voicecards.R;
 import com.jp.playnext.voicecards.adapter.MainThemeListRecyclerVA;
 import com.jp.playnext.voicecards.model.Deck;
+import com.jp.playnext.voicecards.model.InterfaceFactory;
 import com.jp.playnext.voicecards.model.Theme;
+import com.jp.playnext.voicecards.model.ThemeInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by danielmorais on 2/21/17.
@@ -38,21 +44,16 @@ public class MainListFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static MainListFragment newInstance( ArrayList<Theme> alThemes) {
+    public static MainListFragment newInstance() {
         MainListFragment fragment = new MainListFragment();
-        Bundle args = new Bundle();
-        args.putParcelableArrayList(ARG_THEME_LIST, alThemes);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            alThemes = getArguments().getParcelableArrayList(ARG_THEME_LIST);
-        }
+        alThemes = new ArrayList<Theme>();
+        getThemeData();
     }
 
     @Override
@@ -94,6 +95,23 @@ public class MainListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private  void getThemeData() {
+        ThemeInterface themeInterface = InterfaceFactory.createRetrofitService(ThemeInterface.class);
+        Call<ArrayList<Theme>> callTheme = themeInterface.getTheme();
+        callTheme.enqueue(new Callback<ArrayList<Theme>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Theme>> call, Response<ArrayList<Theme>> response) {
+                alThemes = response.body();
+                updateListView(alThemes);
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Theme>> call, Throwable t) {
+
+            }
+        });
     }
 
     public void updateListView(ArrayList<Theme> alThemes) {
