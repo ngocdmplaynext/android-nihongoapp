@@ -50,7 +50,7 @@ public class TeacherRecyclerVA extends RecyclerView.Adapter<TeacherRecyclerVA.Vi
             @Override
             public void onClick(View view) {
                 if (mListener == null) return;
-                mListener.onBtnTouch(holder.mUser);
+                mListener.onBtnTouch(holder.mUser, holder.btnBookmark);
             }
         });
     }

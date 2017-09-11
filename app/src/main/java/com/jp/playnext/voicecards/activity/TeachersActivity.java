@@ -2,6 +2,7 @@ package com.jp.playnext.voicecards.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
 
 import com.jp.playnext.voicecards.R;
 import com.jp.playnext.voicecards.fragment.CardListFragment;
@@ -70,7 +71,7 @@ public class TeachersActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBtnTouch(User user) {
+    public void onBtnTouch(final User user, final Button btn) {
 
     }
 }

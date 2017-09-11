@@ -20,6 +20,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -34,10 +36,12 @@ import com.jp.playnext.voicecards.model.ThemeInterface;
 import com.jp.playnext.voicecards.model.User;
 import com.jp.playnext.voicecards.model.UserDefault;
 import com.jp.playnext.voicecards.model.UserDefaultImpl;
+import com.jp.playnext.voicecards.model.UserInterface;
 import com.jp.playnext.voicecards.utils.FileUtils;
 
 import java.util.ArrayList;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -327,8 +331,53 @@ TeachersFragment.OnTeacherFragmentInteraction {
     }
 
     @Override
-    public void onBtnTouch(User user) {
+    public void onBtnTouch(final User user, final Button btn) {
+        final Context context = this;
+        UserInterface userInterface = InterfaceFactory.createRetrofitService(UserInterface.class);
+        UserDefault userDefault = new UserDefaultImpl(this);
+        if (user.getBookmarked() == false) {
+            Call<ResponseBody> call = userInterface.bookmarks(userDefault.getToken(), user.getUserId());
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.code() == 1000) {
+                        // Session is invalid
+                        Toast.makeText(context, "Session is invalid", Toast.LENGTH_SHORT);
+                    } else if (response.code() == 1001) { // This user is bookmarked
+                        Toast.makeText(context, "This user is bookmarked", Toast.LENGTH_SHORT);
+                    } else if (response.isSuccessful()) {
+                        btn.setText("unBookmark");
+                        user.setBookmarked(true);
+                    }
+                }
 
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(context, "Network error", Toast.LENGTH_SHORT);
+                }
+            });
+        } else {
+            Call<ResponseBody> call = userInterface.unBookmarks(userDefault.getToken(), user.getUserId());
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.code() == 1000) {
+                        // Session is invalid
+                        Toast.makeText(context, "Session is invalid", Toast.LENGTH_SHORT);
+                    } else if (response.code() == 1001) { // This user is bookmarked
+                        Toast.makeText(context, "This user is bookmarked", Toast.LENGTH_SHORT);
+                    } else if (response.isSuccessful()) {
+                        btn.setText("Bookmark");
+                        user.setBookmarked(false);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(context, "Network error", Toast.LENGTH_SHORT);
+                }
+            });
+        }
     }
 
     /**
